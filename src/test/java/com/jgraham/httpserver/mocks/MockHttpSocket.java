@@ -1,9 +1,12 @@
-package com.jgraham.httpserver;
+package com.jgraham.httpserver.mocks;
+
+import com.jgraham.httpserver.iHttpSocket;
 
 import java.io.InputStream;
 import java.io.OutputStream;
 
-public class MockHttpSocket implements HttpSocket {
+public class MockHttpSocket implements iHttpSocket {
+
     private InputStream mockInput;
     private OutputStream mockOutput;
 
@@ -18,6 +21,10 @@ public class MockHttpSocket implements HttpSocket {
 
     public OutputStream getOutputStream() throws Exception {
         return mockOutput;
+    }
+
+    public Boolean isConnected() throws Exception {
+        return true;
     }
 
 }

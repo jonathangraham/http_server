@@ -3,9 +3,11 @@ package com.jgraham.httpserver;
 public class Server {
 
     private iHttpServerSocket serverSocket;
+    private String directory;
 
-    public Server(iHttpServerSocket serverSocket) {
+    public Server(iHttpServerSocket serverSocket, String directory) {
         this.serverSocket = serverSocket;
+        this.directory = directory;
     }
 
     public void start() throws Exception {
@@ -16,21 +18,25 @@ public class Server {
     }
 
     public void actOnConnection(iHttpSocket clientSocket) throws Exception {
-        getRequest(clientSocket);
-        getResponse(clientSocket);
+        Request request = getRequest(clientSocket);
+        getResponse(clientSocket, request);
     }
 
     public void close() throws Exception {
         serverSocket.close();
     }
 
-    public String getRequest(iHttpSocket clientSocket) throws Exception {
-        Request request = new Request(clientSocket);
-        return request.getRequest();
+//    public String getRequest(iHttpSocket clientSocket) throws Exception {
+//        Request request = new Request(clientSocket);
+//        return request.getRequest();
+//    }
+
+    public Request getRequest(iHttpSocket clientSocket) throws Exception {
+        return new Request(clientSocket);
     }
 
-    public void getResponse(iHttpSocket clientSocket) throws Exception {
-        Response response = new Response(clientSocket);
+    public void getResponse(iHttpSocket clientSocket, iRequest request) throws Exception {
+        Response response = new Response(clientSocket, request.getRequestType(), request.getRequestURL(), directory);
         response.getResponse();
     }
 

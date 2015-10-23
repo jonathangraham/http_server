@@ -3,7 +3,7 @@ package com.jgraham.httpserver;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
-public class Request {
+public class Request implements iRequest {
 
     private String request;
 
@@ -14,5 +14,13 @@ public class Request {
 
     public String getRequest() throws Exception {
         return request;
+    }
+
+    public String getRequestType() {
+        return request.split("\\s+")[0];
+    }
+
+    public String getRequestURL() {
+        return request.split("\\s+")[1];
     }
 }

@@ -9,7 +9,7 @@ public class HttpServerMain {
 
         iHttpServerSocket serverSocket = new HttpServerSocket(config.getPort());
 
-        Server server = new Server(serverSocket);
+        Server server = new Server(serverSocket, config.getDirectory());
 
         server.start();
     }

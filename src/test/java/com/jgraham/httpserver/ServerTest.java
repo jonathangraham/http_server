@@ -41,7 +41,7 @@ public class ServerTest {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         MockHttpSocket mockSocket = new MockHttpSocket(inputStream, outputStream);
         Server server = new Server(null, "foobar");
-        MockRequest mockRequest = new MockRequest("GET / HTTP/1.1");
+        MockRequest mockRequest = new MockRequest("GET /file HTTP/1.1");
         server.getResponse(mockSocket, mockRequest);
         Assert.assertTrue(outputStream.toByteArray().length > 0);
     }

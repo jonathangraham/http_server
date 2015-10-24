@@ -101,4 +101,39 @@ public class ResponseTest {
         response.writeResourceToStream();
         assertThat(outputStream.toByteArray(), is(equalTo("".getBytes())));
     }
+
+    @Test
+    public void buildDirectoryContentsTest() throws Exception {
+        InputStream inputStream = null;
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        MockHttpSocket mockSocket = new MockHttpSocket(inputStream, outputStream);
+        Response response = new Response(mockSocket, "GET", "/", "/src/main/resources");
+        String directoryContents = response.buildDirectoryContents();
+        Assert.assertTrue(directoryContents.length() > 0);
+        Assert.assertTrue(directoryContents.contains("file1"));
+        Assert.assertTrue(directoryContents.contains("image.gif"));
+        Assert.assertTrue(directoryContents.contains("<a href=/file2>file2</a><br>"));
+    }
+
+    @Test
+    public void getResponseForRouteTest() throws Exception {
+        InputStream inputStream = null;
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        MockHttpSocket mockSocket = new MockHttpSocket(inputStream, outputStream);
+        Response response = new Response(mockSocket, "GET", "/", "/src/main/resources");
+        response.getResponse();
+        Assert.assertTrue(outputStream.toString().contains("HTTP/1.1 200 OK\r\n\r\n"));
+        Assert.assertTrue(outputStream.toString().contains("<a href=/file2>file2</a><br>"));
+    }
+
+    @Test
+    public void getResponseForKnownRouteTest() throws Exception {
+        InputStream inputStream = null;
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        MockHttpSocket mockSocket = new MockHttpSocket(inputStream, outputStream);
+        Response response = new Response(mockSocket, "GET", "/file1", "/src/main/resources");
+        response.getResponse();
+        Assert.assertTrue(outputStream.toString().contains("HTTP/1.1 200 OK\r\n\r\n"));
+        Assert.assertTrue(outputStream.toString().contains("file1 contents"));
+    }
 }

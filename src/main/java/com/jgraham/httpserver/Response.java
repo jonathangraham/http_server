@@ -29,8 +29,15 @@ public class Response {
     }
 
     public void getBody() throws Exception{
-        if (new File(getFilePath(getRoute(), getPath())).exists()) {
+        if ("/".equals(getPath())) {
+            String files = buildDirectoryContents();
+            out.write(files.getBytes());
+        }
+        else if (new File(getFilePath(getRoute(), getPath())).exists()) {
             writeResourceToStream();
+        }
+        else {
+            out.write("".getBytes());
         }
     }
 
@@ -73,5 +80,19 @@ public class Response {
         catch (RuntimeException e) {
             out.write("".getBytes());
         }
+    }
+
+    public String buildDirectoryContents() {
+        File f = new File(getRoute());
+        String[] files = f.list();
+
+        StringBuilder fileNames = new StringBuilder();
+        fileNames.append("<!DOCTYPE html>\n");
+        fileNames.append("<!DOCTYPE html>\n<html>\n<body>\n");
+        for (String file: files) {
+            fileNames.append(("<a href=/" + file + ">" + file + "</a><br>"));
+        }
+        fileNames.append("</body>\n</html>");
+        return fileNames.toString();
     }
 }

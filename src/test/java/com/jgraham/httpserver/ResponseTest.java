@@ -14,13 +14,13 @@ import static org.junit.Assert.assertThat;
 public class ResponseTest {
 
     @Test
-    public void getResponseForRoutePathTest() throws Exception {
+    public void getHeaderResponseForRoutePathTest() throws Exception {
         InputStream inputStream = null;
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         MockHttpSocket mockSocket = new MockHttpSocket(inputStream, outputStream);
         Response response = new Response(mockSocket, "GET", "/", "/src/main/resources");
         response.getResponse();
-        assertThat(outputStream.toByteArray(), is(equalTo("HTTP/1.1 200 OK\r\n\r\n".getBytes())));
+        Assert.assertEquals("HTTP/1.1 200 OK\r\n\r\n", response.getHeader());
     }
 
     @Test
@@ -30,17 +30,18 @@ public class ResponseTest {
         MockHttpSocket mockSocket = new MockHttpSocket(inputStream, outputStream);
         Response response = new Response(mockSocket, "GET", "/foo", "/src/main/resources");
         response.getResponse();
+        Assert.assertEquals("HTTP/1.1 404 Not Found\r\n\r\n", response.getHeader());
         assertThat(outputStream.toByteArray(), is(equalTo("HTTP/1.1 404 Not Found\r\n\r\n".getBytes())));
     }
 
     @Test
-    public void getResponseForKnownRouteTest() throws Exception {
+    public void getHeaderResponseForKnownRouteTest() throws Exception {
         InputStream inputStream = null;
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         MockHttpSocket mockSocket = new MockHttpSocket(inputStream, outputStream);
         Response response = new Response(mockSocket, "GET", "/file1", "/src/main/resources");
         response.getResponse();
-        assertThat(outputStream.toByteArray(), is(equalTo("HTTP/1.1 200 OK\r\n\r\n".getBytes())));
+        Assert.assertEquals("HTTP/1.1 200 OK\r\n\r\n", response.getHeader());
     }
 
     @Test
@@ -79,5 +80,25 @@ public class ResponseTest {
         Response response = new Response(mockSocket, "PUT", "/form", "/src/main/resources");
         response.getResponse();
         assertThat(outputStream.toByteArray(), is(equalTo("HTTP/1.1 200 OK\r\n\r\n".getBytes())));
+    }
+
+    @Test
+    public void writeResourceToStreamTest() throws Exception {
+        InputStream inputStream = null;
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        MockHttpSocket mockSocket = new MockHttpSocket(inputStream, outputStream);
+        Response response = new Response(mockSocket, "GET", "/file1", "/src/main/resources");
+        response.writeResourceToStream();
+        assertThat(outputStream.toByteArray(), is(equalTo("file1 contents".getBytes())));
+    }
+
+    @Test
+    public void writeResourceToStreamNoContentTest() throws Exception {
+        InputStream inputStream = null;
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        MockHttpSocket mockSocket = new MockHttpSocket(inputStream, outputStream);
+        Response response = new Response(mockSocket, "GET", "/foobar", "/src/main/resources");
+        response.writeResourceToStream();
+        assertThat(outputStream.toByteArray(), is(equalTo("".getBytes())));
     }
 }

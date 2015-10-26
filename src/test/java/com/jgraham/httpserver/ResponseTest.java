@@ -20,7 +20,7 @@ public class ResponseTest {
         MockHttpSocket mockSocket = new MockHttpSocket(inputStream, outputStream);
         Response response = new Response(mockSocket, "GET", "/", "/src/main/resources");
         response.getResponse();
-        Assert.assertEquals("HTTP/1.1 200 OK\r\n\r\n", response.getHeader());
+        Assert.assertEquals("HTTP/1.1 200 OK\r\n", response.getStatus());
     }
 
     @Test
@@ -30,8 +30,8 @@ public class ResponseTest {
         MockHttpSocket mockSocket = new MockHttpSocket(inputStream, outputStream);
         Response response = new Response(mockSocket, "GET", "/foo", "/src/main/resources");
         response.getResponse();
-        Assert.assertEquals("HTTP/1.1 404 Not Found\r\n\r\n", response.getHeader());
-        assertThat(outputStream.toByteArray(), is(equalTo("HTTP/1.1 404 Not Found\r\n\r\n".getBytes())));
+        Assert.assertEquals("HTTP/1.1 404 Not Found\r\n", response.getStatus());
+        Assert.assertTrue(outputStream.toString().contains("HTTP/1.1 404 Not Found"));
     }
 
     @Test
@@ -41,7 +41,7 @@ public class ResponseTest {
         MockHttpSocket mockSocket = new MockHttpSocket(inputStream, outputStream);
         Response response = new Response(mockSocket, "GET", "/file1", "/src/main/resources");
         response.getResponse();
-        Assert.assertEquals("HTTP/1.1 200 OK\r\n\r\n", response.getHeader());
+        Assert.assertEquals("HTTP/1.1 200 OK\r\n", response.getStatus());
     }
 
     @Test
@@ -79,7 +79,7 @@ public class ResponseTest {
         MockHttpSocket mockSocket = new MockHttpSocket(inputStream, outputStream);
         Response response = new Response(mockSocket, "PUT", "/form", "/src/main/resources");
         response.getResponse();
-        assertThat(outputStream.toByteArray(), is(equalTo("HTTP/1.1 200 OK\r\n\r\n".getBytes())));
+        Assert.assertTrue(outputStream.toString().contains("HTTP/1.1 200 OK\r\n"));
     }
 
     @Test
@@ -122,7 +122,7 @@ public class ResponseTest {
         MockHttpSocket mockSocket = new MockHttpSocket(inputStream, outputStream);
         Response response = new Response(mockSocket, "GET", "/", "/src/main/resources");
         response.getResponse();
-        Assert.assertTrue(outputStream.toString().contains("HTTP/1.1 200 OK\r\n\r\n"));
+        Assert.assertTrue(outputStream.toString().contains("HTTP/1.1 200 OK\r\n"));
         Assert.assertTrue(outputStream.toString().contains("<a href=/file2>file2</a><br>"));
     }
 
@@ -133,7 +133,18 @@ public class ResponseTest {
         MockHttpSocket mockSocket = new MockHttpSocket(inputStream, outputStream);
         Response response = new Response(mockSocket, "GET", "/file1", "/src/main/resources");
         response.getResponse();
-        Assert.assertTrue(outputStream.toString().contains("HTTP/1.1 200 OK\r\n\r\n"));
+        Assert.assertTrue(outputStream.toString().contains("HTTP/1.1 200 OK\r\n"));
         Assert.assertTrue(outputStream.toString().contains("file1 contents"));
+    }
+
+    @Test
+    public void getResponseForOptionsTest() throws Exception {
+        InputStream inputStream = null;
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        MockHttpSocket mockSocket = new MockHttpSocket(inputStream, outputStream);
+        Response response = new Response(mockSocket, "OPTIONS", "/method_options", "/src/main/resources");
+        response.getResponse();
+        Assert.assertTrue(outputStream.toString().contains("HTTP/1.1 200 OK\r\n"));
+        Assert.assertTrue(outputStream.toString().contains("Allow: GET,HEAD,POST,OPTIONS,PUT"));
     }
 }

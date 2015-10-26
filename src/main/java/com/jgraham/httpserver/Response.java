@@ -11,8 +11,8 @@ public class Response {
     private String requestType;
     private String requestURL;
     private String directory;
-    private String ok = "HTTP/1.1 200 OK\r\n\r\n";
-    private String notFound = "HTTP/1.1 404 Not Found\r\n\r\n";
+    private String ok = "HTTP/1.1 200 OK\r\n";
+    private String notFound = "HTTP/1.1 404 Not Found\r\n";
 
     public Response(iHttpSocket clientSocket, String requestType, String requestURL, String directory) throws Exception {
         this.out = clientSocket.getOutputStream();
@@ -22,13 +22,23 @@ public class Response {
     }
 
     public void getResponse() throws Exception {
-        String header = getHeader();
-        out.write(header.getBytes());
+        String status = getStatus();
+        out.write(status.getBytes());
+        getHeader();
         getBody();
         out.close();
     }
 
-    public void getBody() throws Exception{
+    public void getHeader() throws Exception {
+        if ("/method_options".equals(getPath())) {
+            out.write("Allow: GET,HEAD,POST,OPTIONS,PUT\r\n".getBytes());
+        }
+        else {
+            out.write("\r\n".getBytes());
+        }
+    }
+
+    public void getBody() throws Exception {
         if ("/".equals(getPath())) {
             String files = buildDirectoryContents();
             out.write(files.getBytes());
@@ -41,14 +51,19 @@ public class Response {
         }
     }
 
-    public String getHeader() {
+    public String getStatus() {
         if ("GET".equals(requestType)) {
             String path = getPath();
             if ("/".equals(path)) {
                 return ok;
-            } else if (new File(getFilePath(getRoute(), getPath())).exists()) {
+            }
+            else if ("/method_options".equals(path)) {
                 return ok;
-            } else {
+            }
+            else if (new File(getFilePath(getRoute(), getPath())).exists()) {
+                return ok;
+            }
+            else {
                 return notFound;
             }
         }

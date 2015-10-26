@@ -13,6 +13,7 @@ public class Response {
     private String directory;
     private String ok = "HTTP/1.1 200 OK\r\n";
     private String notFound = "HTTP/1.1 404 Not Found\r\n";
+    private String notAllowed = "HTTP/1.1 405 Method Not Allowed\r\n";
 
     public Response(iHttpSocket clientSocket, String requestType, String requestURL, String directory) throws Exception {
         this.out = clientSocket.getOutputStream();
@@ -66,6 +67,9 @@ public class Response {
             else {
                 return notFound;
             }
+        }
+        else if (new File(getFilePath(getRoute(), getPath())).exists()) {
+            return notAllowed;
         }
         else {
             return ok;

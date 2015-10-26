@@ -14,7 +14,7 @@ import static org.junit.Assert.assertThat;
 public class ResponseTest {
 
     @Test
-    public void getHeaderResponseForRoutePathTest() throws Exception {
+    public void getStatusResponseForRoutePathTest() throws Exception {
         InputStream inputStream = null;
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         MockHttpSocket mockSocket = new MockHttpSocket(inputStream, outputStream);
@@ -35,7 +35,7 @@ public class ResponseTest {
     }
 
     @Test
-    public void getHeaderResponseForKnownRouteTest() throws Exception {
+    public void getStatusResponseForKnownRouteTest() throws Exception {
         InputStream inputStream = null;
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         MockHttpSocket mockSocket = new MockHttpSocket(inputStream, outputStream);
@@ -146,5 +146,25 @@ public class ResponseTest {
         response.getResponse();
         Assert.assertTrue(outputStream.toString().contains("HTTP/1.1 200 OK\r\n"));
         Assert.assertTrue(outputStream.toString().contains("Allow: GET,HEAD,POST,OPTIONS,PUT"));
+    }
+
+    @Test
+    public void getStatusForPutsMethodNotAllowedTest() throws Exception {
+        InputStream inputStream = null;
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        MockHttpSocket mockSocket = new MockHttpSocket(inputStream, outputStream);
+        Response response = new Response(mockSocket, "PUTS", "/file1", "/src/main/resources");
+        response.getResponse();
+        Assert.assertTrue(outputStream.toString().contains("HTTP/1.1 405 Method Not Allowed\r\n"));
+    }
+
+    @Test
+    public void getStatusForPostMethodNotAllowedTest() throws Exception {
+        InputStream inputStream = null;
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        MockHttpSocket mockSocket = new MockHttpSocket(inputStream, outputStream);
+        Response response = new Response(mockSocket, "POST", "/text-file.txt", "/src/main/resources");
+        response.getResponse();
+        Assert.assertTrue(outputStream.toString().contains("HTTP/1.1 405 Method Not Allowed\r\n"));
     }
 }

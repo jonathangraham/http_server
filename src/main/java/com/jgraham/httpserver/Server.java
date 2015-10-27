@@ -26,11 +26,6 @@ public class Server {
         serverSocket.close();
     }
 
-//    public String getRequest(iHttpSocket clientSocket) throws Exception {
-//        Request request = new Request(clientSocket);
-//        return request.getRequest();
-//    }
-
     public Request getRequest(iHttpSocket clientSocket) throws Exception {
         return new Request(clientSocket);
     }

@@ -77,7 +77,7 @@ public class ResponseTest {
         InputStream inputStream = null;
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         MockHttpSocket mockSocket = new MockHttpSocket(inputStream, outputStream);
-        Response response = new Response(mockSocket, "PUT", "/form", "/src/main/resources");
+        Response response = new Response(mockSocket, "PUT", "/forms", "/src/main/resources");
         response.getResponse();
         Assert.assertTrue(outputStream.toString().contains("HTTP/1.1 200 OK\r\n"));
     }
@@ -166,5 +166,15 @@ public class ResponseTest {
         Response response = new Response(mockSocket, "POST", "/text-file.txt", "/src/main/resources");
         response.getResponse();
         Assert.assertTrue(outputStream.toString().contains("HTTP/1.1 405 Method Not Allowed\r\n"));
+    }
+
+    @Test
+    public void writePartialResourceToStreamTest() throws Exception {
+        InputStream inputStream = null;
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        MockHttpSocket mockSocket = new MockHttpSocket(inputStream, outputStream);
+        Response response = new Response(mockSocket, "GET", "/file1", "/src/main/resources");
+        response.writePartialResourceToStream(0, 10);
+        assertThat(outputStream.toByteArray(), is(equalTo("file1 cont".getBytes())));
     }
 }

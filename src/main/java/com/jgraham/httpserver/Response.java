@@ -1,9 +1,6 @@
 package com.jgraham.httpserver;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 
 public class Response {
 
@@ -15,6 +12,7 @@ public class Response {
     private String notFound = "HTTP/1.1 404 Not Found\r\n";
     private String notAllowed = "HTTP/1.1 405 Method Not Allowed\r\n";
 
+    //need Response to take in Request, and then get the parts from here
     public Response(iHttpSocket clientSocket, String requestType, String requestURL, String directory) throws Exception {
         this.out = clientSocket.getOutputStream();
         this.requestType = requestType;
@@ -60,8 +58,7 @@ public class Response {
             }
             else if ("/method_options".equals(path)) {
                 return ok;
-            }
-            else if (new File(getFilePath(getRoute(), getPath())).exists()) {
+            } else if (new File(getFilePath(getRoute(), getPath())).exists()) {
                 return ok;
             }
             else {
@@ -95,6 +92,19 @@ public class Response {
             while ((numBytes = file.read(bytes)) != -1) {
                 out.write(bytes, 0, numBytes);
             }
+        }
+        catch (RuntimeException e) {
+            out.write("".getBytes());
+        }
+    }
+
+//refactor into writeResourcesToStream
+    public void writePartialResourceToStream(int begin, int finish) throws IOException {
+        int length = finish - begin;
+        try (InputStream file = ClassLoader.class.getResourceAsStream(getPath())) {
+            byte[] bytes = new byte[length];
+            file.read(bytes);
+            out.write(bytes, begin, finish);
         }
         catch (RuntimeException e) {
             out.write("".getBytes());

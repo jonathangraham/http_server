@@ -7,4 +7,5 @@ public interface iRequest {
     public String getRequestType();
 
     public String getRequestURL();
+
 }

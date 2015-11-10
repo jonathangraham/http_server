@@ -1,6 +1,6 @@
 package com.jgraham.httpserver.mocks;
 
-import com.jgraham.httpserver.iHttpSocket;
+import com.jgraham.httpserver.ServerConnection.iHttpSocket;
 
 import java.io.InputStream;
 import java.io.OutputStream;

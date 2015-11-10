@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="16" failures="0" name="com.jgraham.httpserver.ResponseTest" time="0.004" errors="0" skipped="0">
+<testsuite tests="16" failures="0" name="com.jgraham.httpserver.ResponseTest" time="0.006" errors="0" skipped="0">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="sun.boot.library.path" value="/Library/Java/JavaVirtualMachines/jdk1.8.0_05.jdk/Contents/Home/jre/lib"/>
@@ -66,17 +66,17 @@
   <testcase classname="com.jgraham.httpserver.ResponseTest" name="getStatusResponseForRoutePathTest" time="0"/>
   <testcase classname="com.jgraham.httpserver.ResponseTest" name="buildDirectoryContentsTest" time="0"/>
   <testcase classname="com.jgraham.httpserver.ResponseTest" name="getPathTest" time="0"/>
-  <testcase classname="com.jgraham.httpserver.ResponseTest" name="getResponseForKnownRouteTest" time="0.001"/>
+  <testcase classname="com.jgraham.httpserver.ResponseTest" name="getResponseForKnownRouteTest" time="0"/>
   <testcase classname="com.jgraham.httpserver.ResponseTest" name="getResponseForOptionsTest" time="0"/>
-  <testcase classname="com.jgraham.httpserver.ResponseTest" name="writeResourceToStreamNoContentTest" time="0"/>
+  <testcase classname="com.jgraham.httpserver.ResponseTest" name="writeResourceToStreamNoContentTest" time="0.001"/>
   <testcase classname="com.jgraham.httpserver.ResponseTest" name="getRouteTest" time="0"/>
-  <testcase classname="com.jgraham.httpserver.ResponseTest" name="getResponseForUnknownRouteTest" time="0"/>
+  <testcase classname="com.jgraham.httpserver.ResponseTest" name="getResponseForUnknownRouteTest" time="0.001"/>
   <testcase classname="com.jgraham.httpserver.ResponseTest" name="getStatusForPostMethodNotAllowedTest" time="0"/>
-  <testcase classname="com.jgraham.httpserver.ResponseTest" name="getStatusResponseForKnownRouteTest" time="0.001"/>
+  <testcase classname="com.jgraham.httpserver.ResponseTest" name="getStatusResponseForKnownRouteTest" time="0.003"/>
   <testcase classname="com.jgraham.httpserver.ResponseTest" name="getFilePathTest" time="0"/>
   <testcase classname="com.jgraham.httpserver.ResponseTest" name="getResponseForPutTest" time="0"/>
   <testcase classname="com.jgraham.httpserver.ResponseTest" name="writePartialResourceToStreamTest" time="0"/>
   <testcase classname="com.jgraham.httpserver.ResponseTest" name="writeResourceToStreamTest" time="0"/>
-  <testcase classname="com.jgraham.httpserver.ResponseTest" name="getStatusForPutsMethodNotAllowedTest" time="0.002"/>
-  <testcase classname="com.jgraham.httpserver.ResponseTest" name="getResponseForRouteTest" time="0"/>
+  <testcase classname="com.jgraham.httpserver.ResponseTest" name="getStatusForPutsMethodNotAllowedTest" time="0"/>
+  <testcase classname="com.jgraham.httpserver.ResponseTest" name="getResponseForRouteTest" time="0.001"/>
 </testsuite>

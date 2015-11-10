@@ -1,7 +1,7 @@
 package com.jgraham.httpserver.mocks;
 
-import com.jgraham.httpserver.iHttpServerSocket;
-import com.jgraham.httpserver.iHttpSocket;
+import com.jgraham.httpserver.ServerConnection.iHttpServerSocket;
+import com.jgraham.httpserver.ServerConnection.iHttpSocket;
 
 public class MockHttpServerSocket implements iHttpServerSocket {
     private iHttpSocket mockSocket;

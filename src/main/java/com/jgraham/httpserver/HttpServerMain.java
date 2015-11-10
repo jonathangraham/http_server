@@ -1,5 +1,9 @@
 package com.jgraham.httpserver;
 
+import com.jgraham.httpserver.ServerConnection.HttpServerSocket;
+import com.jgraham.httpserver.ServerConnection.Server;
+import com.jgraham.httpserver.ServerConnection.ServerConfig;
+import com.jgraham.httpserver.ServerConnection.iHttpServerSocket;
 
 public class HttpServerMain {
     public static void main(String args[]) throws Exception {

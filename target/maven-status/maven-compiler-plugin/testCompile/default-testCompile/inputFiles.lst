@@ -1,7 +1,12 @@
 /Users/jonathangraham/code/http-server/src/test/java/com/jgraham/httpserver/mocks/MockHttpServerSocket.java
-/Users/jonathangraham/code/http-server/src/test/java/com/jgraham/httpserver/ServerTest.java
-/Users/jonathangraham/code/http-server/src/test/java/com/jgraham/httpserver/mocks/MockRequest.java
+/Users/jonathangraham/code/http-server/src/test/java/com/jgraham/httpserver/Responses/ResponseRouteTest.java
+/Users/jonathangraham/code/http-server/src/test/java/com/jgraham/httpserver/ResponseBuilderTests/FileContentsBuilderTest.java
+/Users/jonathangraham/code/http-server/src/test/java/com/jgraham/httpserver/RequestsTests/RequestParserTest.java
+/Users/jonathangraham/code/http-server/src/test/java/com/jgraham/httpserver/ServerConnectionTests/ServerConfigTest.java
+/Users/jonathangraham/code/http-server/src/test/java/com/jgraham/httpserver/RequestsTests/RequestTest.java
 /Users/jonathangraham/code/http-server/src/test/java/com/jgraham/httpserver/mocks/MockHttpSocket.java
-/Users/jonathangraham/code/http-server/src/test/java/com/jgraham/httpserver/RequestTest.java
-/Users/jonathangraham/code/http-server/src/test/java/com/jgraham/httpserver/ResponseTest.java
-/Users/jonathangraham/code/http-server/src/test/java/com/jgraham/httpserver/ServerConfigTest.java
+/Users/jonathangraham/code/http-server/src/test/java/com/jgraham/httpserver/ResponseBuilderTests/FourOhFourBuilderTest.java
+/Users/jonathangraham/code/http-server/src/test/java/com/jgraham/httpserver/ResponseBuilderTests/FileDirectoryBuilderTest.java
+/Users/jonathangraham/code/http-server/src/test/java/com/jgraham/httpserver/ResponseBuilderTests/MethodOptionsBuilderTest.java
+/Users/jonathangraham/code/http-server/src/test/java/com/jgraham/httpserver/ServerConnectionTests/ServerTest.java
+/Users/jonathangraham/code/http-server/src/test/java/com/jgraham/httpserver/mocks/MockResponseBuilder.java

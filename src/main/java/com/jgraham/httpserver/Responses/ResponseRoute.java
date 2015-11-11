@@ -34,6 +34,9 @@ public class ResponseRoute {
         else if (path.equals("/method_options")) {
             responseBuilder = new MethodOptionsBuilder();
         }
+        else if (path.equals("/redirect")) {
+            responseBuilder = new RedirectBuilder();
+        }
         else {
             responseBuilder = new FourOhFourBuilder();
         }

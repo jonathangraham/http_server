@@ -7,9 +7,9 @@ import org.junit.Test;
 
 public class FourOhFourBuilderTest {
     @Test
-    public void returnsFileContentsResponse() throws Exception {
+    public void returnsFourOhFourResponse() throws Exception {
         iResponseBuilder response = new FourOhFourBuilder();
-        String output = response.getResponse();
-        Assert.assertTrue(output.contains("HTTP/1.1 404 Not Found\r\n\r\n"));
+        byte[] output = response.getResponse();
+        Assert.assertEquals(new String(output), "HTTP/1.1 404 Not Found\r\n\r\n");
     }
 }

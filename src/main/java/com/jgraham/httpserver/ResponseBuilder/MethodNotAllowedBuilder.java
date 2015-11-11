@@ -1,6 +1,6 @@
 package com.jgraham.httpserver.ResponseBuilder;
 
-public class FourOhFourBuilder implements iResponseBuilder {
+public class MethodNotAllowedBuilder implements iResponseBuilder {
 
     public byte[] getResponse() {
         StringBuilder response = new StringBuilder();
@@ -11,7 +11,7 @@ public class FourOhFourBuilder implements iResponseBuilder {
     }
 
     private String getStatusLine() {
-        return "HTTP/1.1 404 Not Found\r\n";
+        return "HTTP/1.1 405 Method Not Allowed\r\n";
     }
 
     private String getHeader() {

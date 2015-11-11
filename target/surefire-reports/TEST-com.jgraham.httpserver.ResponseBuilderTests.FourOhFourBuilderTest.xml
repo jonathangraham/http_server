@@ -63,5 +63,5 @@
     <property name="ftp.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="sun.cpu.isalist" value=""/>
   </properties>
-  <testcase classname="com.jgraham.httpserver.ResponseBuilderTests.FourOhFourBuilderTest" name="returnsFileContentsResponse" time="0"/>
+  <testcase classname="com.jgraham.httpserver.ResponseBuilderTests.FourOhFourBuilderTest" name="returnsFourOhFourResponse" time="0"/>
 </testsuite>

@@ -10,12 +10,12 @@ public class FileDirectoryBuilder implements iResponseBuilder {
         this.directory = directory;
     }
 
-    public String getResponse() {
+    public byte[] getResponse() {
         StringBuilder response = new StringBuilder();
         response.append(getStatusLine());
         response.append(getHeader());
         response.append(getBody());
-        return response.toString();
+        return response.toString().getBytes();
     }
 
     private String getStatusLine() {
@@ -27,10 +27,7 @@ public class FileDirectoryBuilder implements iResponseBuilder {
     }
 
     private String getBody() {
-        return buildDirectoryContents();
-    }
 
-    private String buildDirectoryContents() {
         File f = new File(getRoute());
         String[] files = f.list();
 

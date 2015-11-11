@@ -11,24 +11,28 @@ public class ResponseRoute {
 
     public iResponseBuilder getResponseBuilder(Request request, String directory) {
         String path = request.getRequestURL();
-        if (path.equals("/method_options")) {
-            responseBuilder = new MethodOptionsBuilder();
+        if (request.getRequestType().equals("GET")) {
+            getGETResponseBuilder(path, directory);
         }
-        else if ("GET".equals(request.getRequestType())) {
-            getGETResponseBuilder(request, path, directory);
+        else if (request.getRequestType().equals("PUT")){
+            getPUTResponseBuilder(path, directory);
         }
         else {
-            getPUTResponseBuilder(request);
+            getPUTResponseBuilder(path, directory);
         }
+
         return responseBuilder;
     }
 
-    private void getGETResponseBuilder(Request request, String path, String directory) {
+    private void getGETResponseBuilder(String path, String directory) {
         if ("/".equals(path)) {
             responseBuilder = new FileDirectoryBuilder(directory);
         }
         else if (new File(getFilePath(getRoute(directory), path)).exists()) {
-            responseBuilder = new FileContentsBuilder(path);
+                responseBuilder = new FileContentsBuilder(path);
+        }
+        else if (path.equals("/method_options")) {
+            responseBuilder = new MethodOptionsBuilder();
         }
         else {
             responseBuilder = new FourOhFourBuilder();
@@ -36,8 +40,16 @@ public class ResponseRoute {
 
     }
 
-    private void getPUTResponseBuilder(Request request) {
-        responseBuilder = new Status200Builder();
+    private void getPUTResponseBuilder(String path, String directory) {
+        if (path.equals("/method_options")) {
+            responseBuilder = new MethodOptionsBuilder();
+        }
+        else if (new File(getFilePath(getRoute(directory), path)).exists()) {
+            responseBuilder = new MethodNotAllowedBuilder();
+        }
+        else {
+            responseBuilder = new Status200Builder();
+        }
     }
 
     private String getRoute(String directory) {

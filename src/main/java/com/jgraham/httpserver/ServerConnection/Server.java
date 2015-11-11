@@ -32,7 +32,7 @@ public class Server {
         Request request = getNewRequest(rawRequest);
         ResponseRoute responseRoute = getResponseRoute();
         iResponseBuilder responseBuilder = getResponseBuilder(responseRoute, request);
-        String response = getResponse(responseBuilder);
+        byte[] response = getResponse(responseBuilder);
         writeResponse(clientSocket, response);
     }
 
@@ -70,14 +70,14 @@ public class Server {
         return responseRoute.getResponseBuilder(request, directory);
     }
 
-    public String getResponse(iResponseBuilder responseBuilder) throws Exception {
+    public byte[] getResponse(iResponseBuilder responseBuilder) throws Exception {
 
         return responseBuilder.getResponse();
     }
 
-    public void writeResponse(iHttpSocket clientSocket, String response) throws Exception {
+    public void writeResponse(iHttpSocket clientSocket, byte[] response) throws Exception {
         OutputStream out = clientSocket.getOutputStream();
-        out.write(response.getBytes());
+        out.write(response);
         out.close();
     }
 

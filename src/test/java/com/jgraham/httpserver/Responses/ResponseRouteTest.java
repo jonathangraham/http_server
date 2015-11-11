@@ -1,10 +1,7 @@
 package com.jgraham.httpserver.Responses;
 
 import com.jgraham.httpserver.Requests.Request;
-import com.jgraham.httpserver.ResponseBuilder.FileContentsBuilder;
-import com.jgraham.httpserver.ResponseBuilder.FileDirectoryBuilder;
-import com.jgraham.httpserver.ResponseBuilder.FourOhFourBuilder;
-import com.jgraham.httpserver.ResponseBuilder.MethodOptionsBuilder;
+import com.jgraham.httpserver.ResponseBuilder.*;
 import org.junit.Assert;
 import org.junit.Test;
 

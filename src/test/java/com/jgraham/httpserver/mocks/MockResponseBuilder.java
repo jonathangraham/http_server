@@ -4,13 +4,13 @@ import com.jgraham.httpserver.ResponseBuilder.iResponseBuilder;
 
 public class MockResponseBuilder implements iResponseBuilder {
 
-    private String response;
+    private byte[] response;
 
     public MockResponseBuilder(String response) {
-        this.response = response;
+        this.response = response.getBytes();
     }
 
-    public String getResponse() {
+    public byte[] getResponse() {
         return response;
     }
 }

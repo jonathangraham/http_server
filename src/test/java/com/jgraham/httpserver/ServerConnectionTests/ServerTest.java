@@ -45,23 +45,22 @@ public class ServerTest {
         InputStream inputStream = null;
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         MockHttpSocket mockSocket = new MockHttpSocket(inputStream, outputStream);
-        Server server = new Server(null, "foobar");
-        server.writeResponse(mockSocket, "HTTP/1.1 200 OK\r\n\r\nresponse to be written");
+        Server server = new Server(null, null);
+        server.writeResponse(mockSocket, "HTTP/1.1 200 OK\r\n\r\nresponse to be written".getBytes());
         Assert.assertTrue(outputStream.toByteArray().length > 0);
         Assert.assertTrue(outputStream.toString().contains("HTTP/1.1 200 OK\r\n\r\nresponse to be written"));
     }
 
     @Test
     public void getResponseTest() throws Exception {
-        String response = "test response";
-        iResponseBuilder responseBuilder = new MockResponseBuilder(response);
-        Server server = new Server(null, "foobar");
-        Assert.assertEquals(response, server.getResponse(responseBuilder));
+        iResponseBuilder responseBuilder = new MockResponseBuilder("test response");
+        Server server = new Server(null, null);
+        Assert.assertEquals("test response", new String(server.getResponse(responseBuilder)));
     }
 
     @Test
     public void getNewRequestTest() throws Exception {
-        Server server = new Server(null, "foobar");
+        Server server = new Server(null, null);
         Assert.assertEquals(server.getNewRequest("GET / HTTP/1.1\r\n\r\n").getClass(), new Request(new HashMap<String, String>()).getClass());
     }
 

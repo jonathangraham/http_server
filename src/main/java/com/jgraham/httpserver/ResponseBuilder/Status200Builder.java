@@ -2,12 +2,12 @@ package com.jgraham.httpserver.ResponseBuilder;
 
 public class Status200Builder implements iResponseBuilder {
 
-    public String getResponse() {
+    public byte[] getResponse() {
         StringBuilder response = new StringBuilder();
         response.append(getStatusLine());
         response.append(getHeader());
         response.append(getBody());
-        return response.toString();
+        return response.toString().getBytes();
     }
 
     private String getStatusLine() {

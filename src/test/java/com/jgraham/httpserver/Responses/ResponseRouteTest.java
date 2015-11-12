@@ -5,10 +5,7 @@ import com.jgraham.httpserver.ResponseBuilder.*;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileReader;
-import java.io.InputStream;
+import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -59,7 +56,7 @@ public class ResponseRouteTest {
         parsedRequestComponents.put("RequestHeader", "");
         Request request = new Request(parsedRequestComponents);
         ResponseRoute responseRoute = new ResponseRoute("/src/main/resources");
-        Assert.assertEquals(responseRoute.getResponseBuilder(request).getClass(), new FileContentsBuilder(null).getClass());
+        Assert.assertEquals(responseRoute.getResponseBuilder(request).getClass(), new FileContentsBuilder(null, null).getClass());
     }
 
     @Test
@@ -149,53 +146,48 @@ public class ResponseRouteTest {
         Assert.assertEquals(responseRoute.getResponseBuilder(request).getClass(), new ParameterDecodeBuilder("/anything?ghjd").getClass());
     }
 
-//    @Test
-//    public void getFormResultTest() throws Exception {
-//        Map<String, String> firstParsedRequestComponents = new HashMap<>();
-//        firstParsedRequestComponents.put("RequestType", "POST");
-//        firstParsedRequestComponents.put("RequestURL", "/form");
-//        firstParsedRequestComponents.put("RequestHTTPVersion", "HTTP/1.1");
-//        firstParsedRequestComponents.put("RequestHeader", "");
-//        Request firstRequest = new Request(firstParsedRequestComponents);
-//        iResponseRoute firstResponseRoute = new ResponseRoute("/src/main/resources");
-//        firstResponseRoute.getResponseBuilder(firstRequest);
-//        Assert.assertEquals(firstResponseRoute.getResponseBuilder(firstRequest).getClass(), new Status200Builder().getClass());
-//
-//        ByteArrayOutputStream output = new ByteArrayOutputStream();
-//        try (InputStream file = ClassLoader.class.getResourceAsStream("/form")) {
-//            byte[] bytes = new byte[1000];
-//            int numBytes;
-//            while ((numBytes = file.read(bytes)) != -1) {
-//                output.write(bytes, 0, numBytes);
-//            }
-//        } catch (RuntimeException e) {
-//            output.write("".getBytes());
-//        }
-//        String out = output.toString();
-//        Assert.assertEquals("data=fatcat", out);
+    @Test
+    public void getFormResultTest() throws Exception {
 
-//        Map<String, String> secondParsedRequestComponents = new HashMap<>();
-//        secondParsedRequestComponents.put("RequestType", "PUT");
-//        secondParsedRequestComponents.put("RequestURL", "/form");
-//        secondParsedRequestComponents.put("RequestHTTPVersion", "HTTP/1.1");
-//        secondParsedRequestComponents.put("RequestHeader", "");
-//        Request secondRequest = new Request(firstParsedRequestComponents);
-//        iResponseRoute secondResponseRoute = new ResponseRoute("/src/main/resources");
-//        secondResponseRoute.getResponseBuilder(secondRequest);
-//        Assert.assertEquals(firstResponseRoute.getResponseBuilder(secondRequest).getClass(), new Status200Builder().getClass());
-//
-//        ByteArrayOutputStream output2 = new ByteArrayOutputStream();
-//        try (InputStream file = ClassLoader.class.getResourceAsStream("/form")) {
-//            byte[] bytes = new byte[1000];
-//            int numBytes;
-//            while ((numBytes = file.read(bytes)) != -1) {
-//                output2.write(bytes, 0, numBytes);
-//            }
-//        } catch (RuntimeException e) {
-//            output2.write("".getBytes());
-//        }
-//        String out2 = output.toString();
-//        Assert.assertEquals("data=heathcliff", out2);
-//    }
+        String path = "/src/main/resources/form";
+        Assert.assertFalse(new File(System.getProperty("user.dir") + path).exists());
+
+        Map<String, String> firstParsedRequestComponents = new HashMap<>();
+        firstParsedRequestComponents.put("RequestType", "POST");
+        firstParsedRequestComponents.put("RequestURL", "/form");
+        firstParsedRequestComponents.put("RequestHTTPVersion", "HTTP/1.1");
+        firstParsedRequestComponents.put("RequestHeader", "");
+        Request firstRequest = new Request(firstParsedRequestComponents);
+        iResponseRoute firstResponseRoute = new ResponseRoute("/src/main/resources");
+        Assert.assertEquals(firstResponseRoute.getResponseBuilder(firstRequest).getClass(), new Status200Builder().getClass());
+
+        iResponseBuilder response = new FileContentsBuilder("/form", "/src/main/resources");
+        byte[] output = response.getResponse();
+        Assert.assertEquals(new String(output), "HTTP/1.1 200 OK\r\n\r\ndata=fatcat");
+
+        Map<String, String> secondParsedRequestComponents = new HashMap<>();
+        secondParsedRequestComponents.put("RequestType", "PUT");
+        secondParsedRequestComponents.put("RequestURL", "/form");
+        secondParsedRequestComponents.put("RequestHTTPVersion", "HTTP/1.1");
+        secondParsedRequestComponents.put("RequestHeader", "");
+        Request secondRequest = new Request(secondParsedRequestComponents);
+        iResponseRoute secondResponseRoute = new ResponseRoute("/src/main/resources");
+        Assert.assertEquals(secondResponseRoute.getResponseBuilder(secondRequest).getClass(), new Status200Builder().getClass());
+
+        iResponseBuilder response2 = new FileContentsBuilder("/form", "/src/main/resources");
+        byte[] output2 = response2.getResponse();
+        Assert.assertTrue(new String(output2).contains("data=heathcliff"));
+
+        Map<String, String> parsedRequestComponents3 = new HashMap<>();
+        parsedRequestComponents3.put("RequestType", "DELETE");
+        parsedRequestComponents3.put("RequestURL", "/form");
+        parsedRequestComponents3.put("RequestHTTPVersion", "HTTP/1.1");
+        parsedRequestComponents3.put("RequestHeader", "");
+        Request thirdRequest = new Request(parsedRequestComponents3);
+        iResponseRoute thirdResponseRoute = new ResponseRoute("/src/main/resources");
+        Assert.assertEquals(thirdResponseRoute.getResponseBuilder(thirdRequest).getClass(), new Status200Builder().getClass());
+
+        Assert.assertFalse(new File(System.getProperty("user.dir") + path).exists());
+    }
 
 }

@@ -7,6 +7,7 @@ import com.jgraham.httpserver.ResponseBuilder.*;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -47,13 +48,13 @@ public class ResponseRoute implements iResponseRoute {
             responseBuilder = new PartialContentBuilder(range, path);
         }
         else if (path.contains("/form") && (new File(getFilePath(getRoute(directory), path)).exists())) {
-            responseBuilder = new FileContentsBuilder(path);
+            responseBuilder = new FileContentsBuilder(path, directory);
         }
         else if (path.contains("/form")) {
             responseBuilder = new Status200Builder();
         }
         else if (new File(getFilePath(getRoute(directory), path)).exists()) {
-            responseBuilder = new FileContentsBuilder(path);
+            responseBuilder = new FileContentsBuilder(path, directory);
         }
         else if (path.contains("?")) {
             responseBuilder = new ParameterDecodeBuilder(path);
@@ -83,12 +84,14 @@ public class ResponseRoute implements iResponseRoute {
     private void modifyForm(String path, String directory, String verb) throws IOException {
         File f = new File(getFilePath(getRoute(directory), path));
         FileWriter file = new FileWriter(f, false);
-        if (verb.equals("POST")) {
-            file.write("data=fatcat");
+        if (verb.equals("PUT")) {
+            file.write("data=heathcliff");
+            file.flush();
             file.close();
         }
-        else if (verb.equals("PUT")) {
-            file.write("data=heathcliff");
+        else if (verb.equals("POST")) {
+            file.write("data=fatcat");
+            file.flush();
             file.close();
         }
         else {

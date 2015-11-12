@@ -63,11 +63,11 @@ public class Server {
     }
 
     private ResponseRoute getResponseRoute() {
-        return new ResponseRoute();
+        return new ResponseRoute(directory);
     }
 
     private iResponseBuilder getResponseBuilder(ResponseRoute responseRoute, Request request) {
-        return responseRoute.getResponseBuilder(request, directory);
+        return responseRoute.getResponseBuilder(request);
     }
 
     public byte[] getResponse(iResponseBuilder responseBuilder) throws Exception {

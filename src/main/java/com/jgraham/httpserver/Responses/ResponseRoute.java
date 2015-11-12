@@ -7,11 +7,16 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ResponseRoute {
+public class ResponseRoute implements iResponseRoute {
 
+    private String directory;
     private iResponseBuilder responseBuilder;
 
-    public iResponseBuilder getResponseBuilder(Request request, String directory) {
+    public ResponseRoute(String directory) {
+        this.directory = directory;
+    }
+
+    public iResponseBuilder getResponseBuilder(Request request) {
         String path = request.getRequestURL();
         String header = request.getRequestHeader();
         if (request.getRequestType().equals("GET")) {

@@ -18,8 +18,8 @@ public class ResponseRouteTest {
         parsedRequestComponents.put("RequestHTTPVersion", "HTTP/1.1");
         parsedRequestComponents.put("RequestHeader", "");
         Request request = new Request(parsedRequestComponents);
-        ResponseRoute responseRoute = new ResponseRoute();
-        Assert.assertEquals(responseRoute.getResponseBuilder(request, null).getClass(), new MethodOptionsBuilder().getClass());
+        ResponseRoute responseRoute = new ResponseRoute(null);
+        Assert.assertEquals(responseRoute.getResponseBuilder(request).getClass(), new MethodOptionsBuilder().getClass());
     }
 
     @Test
@@ -30,8 +30,8 @@ public class ResponseRouteTest {
         parsedRequestComponents.put("RequestHTTPVersion", "HTTP/1.1");
         parsedRequestComponents.put("RequestHeader", "");
         Request request = new Request(parsedRequestComponents);
-        ResponseRoute responseRoute = new ResponseRoute();
-        Assert.assertEquals(responseRoute.getResponseBuilder(request, null).getClass(), new MethodOptionsBuilder().getClass());
+        ResponseRoute responseRoute = new ResponseRoute(null);
+        Assert.assertEquals(responseRoute.getResponseBuilder(request).getClass(), new MethodOptionsBuilder().getClass());
     }
 
     @Test
@@ -42,8 +42,8 @@ public class ResponseRouteTest {
         parsedRequestComponents.put("RequestHTTPVersion", "HTTP/1.1");
         parsedRequestComponents.put("RequestHeader", "");
         Request request = new Request(parsedRequestComponents);
-        ResponseRoute responseRoute = new ResponseRoute();
-        Assert.assertEquals(responseRoute.getResponseBuilder(request, null).getClass(), new FileDirectoryBuilder(null).getClass());
+        ResponseRoute responseRoute = new ResponseRoute(null);
+        Assert.assertEquals(responseRoute.getResponseBuilder(request).getClass(), new FileDirectoryBuilder(null).getClass());
     }
 
     @Test
@@ -54,8 +54,8 @@ public class ResponseRouteTest {
         parsedRequestComponents.put("RequestHTTPVersion", "HTTP/1.1");
         parsedRequestComponents.put("RequestHeader", "");
         Request request = new Request(parsedRequestComponents);
-        ResponseRoute responseRoute = new ResponseRoute();
-        Assert.assertEquals(responseRoute.getResponseBuilder(request, "/src/main/resources").getClass(), new FileContentsBuilder(null).getClass());
+        ResponseRoute responseRoute = new ResponseRoute("/src/main/resources");
+        Assert.assertEquals(responseRoute.getResponseBuilder(request).getClass(), new FileContentsBuilder(null).getClass());
     }
 
     @Test
@@ -66,8 +66,8 @@ public class ResponseRouteTest {
         parsedRequestComponents.put("RequestHTTPVersion", "HTTP/1.1");
         parsedRequestComponents.put("RequestHeader", "");
         Request request = new Request(parsedRequestComponents);
-        ResponseRoute responseRoute = new ResponseRoute();
-        Assert.assertEquals(responseRoute.getResponseBuilder(request, null).getClass(), new FourOhFourBuilder().getClass());
+        ResponseRoute responseRoute = new ResponseRoute(null);
+        Assert.assertEquals(responseRoute.getResponseBuilder(request).getClass(), new FourOhFourBuilder().getClass());
     }
 
     @Test
@@ -78,8 +78,8 @@ public class ResponseRouteTest {
         parsedRequestComponents.put("RequestHTTPVersion", "HTTP/1.1");
         parsedRequestComponents.put("RequestHeader", "");
         Request request = new Request(parsedRequestComponents);
-        ResponseRoute responseRoute = new ResponseRoute();
-        Assert.assertEquals(responseRoute.getResponseBuilder(request, null).getClass(), new RedirectBuilder().getClass());
+        ResponseRoute responseRoute = new ResponseRoute(null);
+        Assert.assertEquals(responseRoute.getResponseBuilder(request).getClass(), new RedirectBuilder().getClass());
     }
 
     @Test
@@ -93,8 +93,8 @@ public class ResponseRouteTest {
         range.put("Start", "0");
         range.put("End", "10");
         Request request = new Request(parsedRequestComponents);
-        ResponseRoute responseRoute = new ResponseRoute();
-        Assert.assertEquals(responseRoute.getResponseBuilder(request, null).getClass(), new PartialContentBuilder(range, "/partial_content.txt").getClass());
+        ResponseRoute responseRoute = new ResponseRoute(null);
+        Assert.assertEquals(responseRoute.getResponseBuilder(request).getClass(), new PartialContentBuilder(range, "/partial_content.txt").getClass());
     }
 
     @Test
@@ -102,7 +102,7 @@ public class ResponseRouteTest {
         Map<String,String> testRange = new HashMap<>();
         testRange.put("Start", "10");
         testRange.put("End", "51");
-        ResponseRoute responseRoute = new ResponseRoute();
+        ResponseRoute responseRoute = new ResponseRoute(null);
         Assert.assertEquals(testRange, responseRoute.getPartialContentRange("10-50"));
     }
 
@@ -111,7 +111,7 @@ public class ResponseRouteTest {
         Map<String,String> testRange = new HashMap<>();
         testRange.put("Start", "50");
         testRange.put("End", "-2");
-        ResponseRoute responseRoute = new ResponseRoute();
+        ResponseRoute responseRoute = new ResponseRoute(null);
         Assert.assertEquals(testRange, responseRoute.getPartialContentRange("-50"));
     }
 
@@ -120,7 +120,7 @@ public class ResponseRouteTest {
         Map<String,String> testRange = new HashMap<>();
         testRange.put("Start", "10");
         testRange.put("End", "-1");
-        ResponseRoute responseRoute = new ResponseRoute();
+        ResponseRoute responseRoute = new ResponseRoute(null);
         Assert.assertEquals(testRange, responseRoute.getPartialContentRange("10-"));
     }
 
@@ -129,7 +129,7 @@ public class ResponseRouteTest {
         Map<String,String> testRange = new HashMap<>();
         testRange.put("Start", "0");
         testRange.put("End", "-1");
-        ResponseRoute responseRoute = new ResponseRoute();
+        ResponseRoute responseRoute = new ResponseRoute(null);
         Assert.assertEquals(testRange, responseRoute.getPartialContentRange("-"));
     }
 

@@ -66,7 +66,7 @@ public class Server {
         return new ResponseRoute(directory);
     }
 
-    private iResponseBuilder getResponseBuilder(ResponseRoute responseRoute, Request request) {
+    private iResponseBuilder getResponseBuilder(ResponseRoute responseRoute, Request request) throws Exception {
         return responseRoute.getResponseBuilder(request);
     }
 

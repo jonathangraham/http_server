@@ -5,13 +5,17 @@ import com.jgraham.httpserver.ResponseBuilder.*;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileReader;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
 public class ResponseRouteTest {
 
     @Test
-    public void getMethodOptionsBuilderTestWithGet() {
+    public void getMethodOptionsBuilderTestWithGet() throws Exception{
         Map<String,String> parsedRequestComponents = new HashMap<>();
         parsedRequestComponents.put("RequestType", "GET");
         parsedRequestComponents.put("RequestURL", "/method_options");
@@ -23,7 +27,7 @@ public class ResponseRouteTest {
     }
 
     @Test
-    public void getMethodOptionsBuilderTestWithPut() {
+    public void getMethodOptionsBuilderTestWithPut() throws Exception{
         Map<String,String> parsedRequestComponents = new HashMap<>();
         parsedRequestComponents.put("RequestType", "PUT");
         parsedRequestComponents.put("RequestURL", "/method_options");
@@ -35,7 +39,7 @@ public class ResponseRouteTest {
     }
 
     @Test
-    public void getFileDirectoryBuilderTest() {
+    public void getFileDirectoryBuilderTest() throws Exception{
         Map<String,String> parsedRequestComponents = new HashMap<>();
         parsedRequestComponents.put("RequestType", "GET");
         parsedRequestComponents.put("RequestURL", "/");
@@ -47,7 +51,7 @@ public class ResponseRouteTest {
     }
 
     @Test
-    public void getFileContentsBuilderTest() {
+    public void getFileContentsBuilderTest() throws Exception{
         Map<String,String> parsedRequestComponents = new HashMap<>();
         parsedRequestComponents.put("RequestType", "GET");
         parsedRequestComponents.put("RequestURL", "/file1");
@@ -59,7 +63,7 @@ public class ResponseRouteTest {
     }
 
     @Test
-    public void getFourOhFourBuilderTest() {
+    public void getFourOhFourBuilderTest() throws Exception{
         Map<String,String> parsedRequestComponents = new HashMap<>();
         parsedRequestComponents.put("RequestType", "GET");
         parsedRequestComponents.put("RequestURL", "/foobar");
@@ -71,7 +75,7 @@ public class ResponseRouteTest {
     }
 
     @Test
-    public void getRedirectBuilderTest() {
+    public void getRedirectBuilderTest() throws Exception{
         Map<String,String> parsedRequestComponents = new HashMap<>();
         parsedRequestComponents.put("RequestType", "GET");
         parsedRequestComponents.put("RequestURL", "/redirect");
@@ -83,7 +87,7 @@ public class ResponseRouteTest {
     }
 
     @Test
-    public void getPartialContentTest() {
+    public void getPartialContentTest() throws Exception{
         Map<String,String> parsedRequestComponents = new HashMap<>();
         parsedRequestComponents.put("RequestType", "GET");
         parsedRequestComponents.put("RequestURL", "/partial_content.txt");
@@ -134,7 +138,7 @@ public class ResponseRouteTest {
     }
 
     @Test
-    public void getParameterDecodeBuilderTest() {
+    public void getParameterDecodeBuilderTest() throws Exception{
         Map<String,String> parsedRequestComponents = new HashMap<>();
         parsedRequestComponents.put("RequestType", "GET");
         parsedRequestComponents.put("RequestURL", "/anything?ghjd");
@@ -144,5 +148,54 @@ public class ResponseRouteTest {
         ResponseRoute responseRoute = new ResponseRoute(null);
         Assert.assertEquals(responseRoute.getResponseBuilder(request).getClass(), new ParameterDecodeBuilder("/anything?ghjd").getClass());
     }
+
+//    @Test
+//    public void getFormResultTest() throws Exception {
+//        Map<String, String> firstParsedRequestComponents = new HashMap<>();
+//        firstParsedRequestComponents.put("RequestType", "POST");
+//        firstParsedRequestComponents.put("RequestURL", "/form");
+//        firstParsedRequestComponents.put("RequestHTTPVersion", "HTTP/1.1");
+//        firstParsedRequestComponents.put("RequestHeader", "");
+//        Request firstRequest = new Request(firstParsedRequestComponents);
+//        iResponseRoute firstResponseRoute = new ResponseRoute("/src/main/resources");
+//        firstResponseRoute.getResponseBuilder(firstRequest);
+//        Assert.assertEquals(firstResponseRoute.getResponseBuilder(firstRequest).getClass(), new Status200Builder().getClass());
+//
+//        ByteArrayOutputStream output = new ByteArrayOutputStream();
+//        try (InputStream file = ClassLoader.class.getResourceAsStream("/form")) {
+//            byte[] bytes = new byte[1000];
+//            int numBytes;
+//            while ((numBytes = file.read(bytes)) != -1) {
+//                output.write(bytes, 0, numBytes);
+//            }
+//        } catch (RuntimeException e) {
+//            output.write("".getBytes());
+//        }
+//        String out = output.toString();
+//        Assert.assertEquals("data=fatcat", out);
+
+//        Map<String, String> secondParsedRequestComponents = new HashMap<>();
+//        secondParsedRequestComponents.put("RequestType", "PUT");
+//        secondParsedRequestComponents.put("RequestURL", "/form");
+//        secondParsedRequestComponents.put("RequestHTTPVersion", "HTTP/1.1");
+//        secondParsedRequestComponents.put("RequestHeader", "");
+//        Request secondRequest = new Request(firstParsedRequestComponents);
+//        iResponseRoute secondResponseRoute = new ResponseRoute("/src/main/resources");
+//        secondResponseRoute.getResponseBuilder(secondRequest);
+//        Assert.assertEquals(firstResponseRoute.getResponseBuilder(secondRequest).getClass(), new Status200Builder().getClass());
+//
+//        ByteArrayOutputStream output2 = new ByteArrayOutputStream();
+//        try (InputStream file = ClassLoader.class.getResourceAsStream("/form")) {
+//            byte[] bytes = new byte[1000];
+//            int numBytes;
+//            while ((numBytes = file.read(bytes)) != -1) {
+//                output2.write(bytes, 0, numBytes);
+//            }
+//        } catch (RuntimeException e) {
+//            output2.write("".getBytes());
+//        }
+//        String out2 = output.toString();
+//        Assert.assertEquals("data=heathcliff", out2);
+//    }
 
 }

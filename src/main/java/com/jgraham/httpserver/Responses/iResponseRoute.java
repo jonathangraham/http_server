@@ -5,5 +5,5 @@ import com.jgraham.httpserver.ResponseBuilder.iResponseBuilder;
 
 public interface iResponseRoute {
 
-    public iResponseBuilder getResponseBuilder(Request request);
+    public iResponseBuilder getResponseBuilder(Request request) throws Exception;
 }

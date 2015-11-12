@@ -6,6 +6,7 @@
 /Users/jonathangraham/code/http-server/src/test/java/com/jgraham/httpserver/ServerConnectionTests/ServerConfigTest.java
 /Users/jonathangraham/code/http-server/src/test/java/com/jgraham/httpserver/ResponseBuilderTests/FileDirectoryBuilderTest.java
 /Users/jonathangraham/code/http-server/src/test/java/com/jgraham/httpserver/ResponseBuilderTests/MethodOptionsBuilderTest.java
+/Users/jonathangraham/code/http-server/src/test/java/com/jgraham/httpserver/ResponseBuilderTests/PartialContentBuilderTest.java
 /Users/jonathangraham/code/http-server/src/test/java/com/jgraham/httpserver/mocks/MockResponseBuilder.java
 /Users/jonathangraham/code/http-server/src/test/java/com/jgraham/httpserver/mocks/MockHttpServerSocket.java
 /Users/jonathangraham/code/http-server/src/test/java/com/jgraham/httpserver/RequestsTests/RequestTest.java

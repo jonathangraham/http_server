@@ -16,6 +16,7 @@ public class ResponseRouteTest {
         parsedRequestComponents.put("RequestType", "GET");
         parsedRequestComponents.put("RequestURL", "/method_options");
         parsedRequestComponents.put("RequestHTTPVersion", "HTTP/1.1");
+        parsedRequestComponents.put("RequestHeader", "");
         Request request = new Request(parsedRequestComponents);
         ResponseRoute responseRoute = new ResponseRoute();
         Assert.assertEquals(responseRoute.getResponseBuilder(request, null).getClass(), new MethodOptionsBuilder().getClass());
@@ -27,6 +28,7 @@ public class ResponseRouteTest {
         parsedRequestComponents.put("RequestType", "PUT");
         parsedRequestComponents.put("RequestURL", "/method_options");
         parsedRequestComponents.put("RequestHTTPVersion", "HTTP/1.1");
+        parsedRequestComponents.put("RequestHeader", "");
         Request request = new Request(parsedRequestComponents);
         ResponseRoute responseRoute = new ResponseRoute();
         Assert.assertEquals(responseRoute.getResponseBuilder(request, null).getClass(), new MethodOptionsBuilder().getClass());
@@ -38,6 +40,7 @@ public class ResponseRouteTest {
         parsedRequestComponents.put("RequestType", "GET");
         parsedRequestComponents.put("RequestURL", "/");
         parsedRequestComponents.put("RequestHTTPVersion", "HTTP/1.1");
+        parsedRequestComponents.put("RequestHeader", "");
         Request request = new Request(parsedRequestComponents);
         ResponseRoute responseRoute = new ResponseRoute();
         Assert.assertEquals(responseRoute.getResponseBuilder(request, null).getClass(), new FileDirectoryBuilder(null).getClass());
@@ -49,6 +52,7 @@ public class ResponseRouteTest {
         parsedRequestComponents.put("RequestType", "GET");
         parsedRequestComponents.put("RequestURL", "/file1");
         parsedRequestComponents.put("RequestHTTPVersion", "HTTP/1.1");
+        parsedRequestComponents.put("RequestHeader", "");
         Request request = new Request(parsedRequestComponents);
         ResponseRoute responseRoute = new ResponseRoute();
         Assert.assertEquals(responseRoute.getResponseBuilder(request, "/src/main/resources").getClass(), new FileContentsBuilder(null).getClass());
@@ -60,8 +64,73 @@ public class ResponseRouteTest {
         parsedRequestComponents.put("RequestType", "GET");
         parsedRequestComponents.put("RequestURL", "/foobar");
         parsedRequestComponents.put("RequestHTTPVersion", "HTTP/1.1");
+        parsedRequestComponents.put("RequestHeader", "");
         Request request = new Request(parsedRequestComponents);
         ResponseRoute responseRoute = new ResponseRoute();
         Assert.assertEquals(responseRoute.getResponseBuilder(request, null).getClass(), new FourOhFourBuilder().getClass());
     }
+
+    @Test
+    public void getRedirectBuilderTest() {
+        Map<String,String> parsedRequestComponents = new HashMap<>();
+        parsedRequestComponents.put("RequestType", "GET");
+        parsedRequestComponents.put("RequestURL", "/redirect");
+        parsedRequestComponents.put("RequestHTTPVersion", "HTTP/1.1");
+        parsedRequestComponents.put("RequestHeader", "");
+        Request request = new Request(parsedRequestComponents);
+        ResponseRoute responseRoute = new ResponseRoute();
+        Assert.assertEquals(responseRoute.getResponseBuilder(request, null).getClass(), new RedirectBuilder().getClass());
+    }
+
+    @Test
+    public void getPartialContentTest() {
+        Map<String,String> parsedRequestComponents = new HashMap<>();
+        parsedRequestComponents.put("RequestType", "GET");
+        parsedRequestComponents.put("RequestURL", "/partial_content.txt");
+        parsedRequestComponents.put("RequestHTTPVersion", "HTTP/1.1");
+        parsedRequestComponents.put("RequestHeader", "Range=0-10");
+        Map<String, String> range = new HashMap<>();
+        range.put("Start", "0");
+        range.put("End", "10");
+        Request request = new Request(parsedRequestComponents);
+        ResponseRoute responseRoute = new ResponseRoute();
+        Assert.assertEquals(responseRoute.getResponseBuilder(request, null).getClass(), new PartialContentBuilder(range, "/partial_content.txt").getClass());
+    }
+
+    @Test
+    public void getPartialContentRangeTest() {
+        Map<String,String> testRange = new HashMap<>();
+        testRange.put("Start", "10");
+        testRange.put("End", "51");
+        ResponseRoute responseRoute = new ResponseRoute();
+        Assert.assertEquals(testRange, responseRoute.getPartialContentRange("10-50"));
+    }
+
+    @Test
+    public void getPartialContentRangeTest2() {
+        Map<String,String> testRange = new HashMap<>();
+        testRange.put("Start", "50");
+        testRange.put("End", "-2");
+        ResponseRoute responseRoute = new ResponseRoute();
+        Assert.assertEquals(testRange, responseRoute.getPartialContentRange("-50"));
+    }
+
+    @Test
+    public void getPartialContentRangeTest3() {
+        Map<String,String> testRange = new HashMap<>();
+        testRange.put("Start", "10");
+        testRange.put("End", "-1");
+        ResponseRoute responseRoute = new ResponseRoute();
+        Assert.assertEquals(testRange, responseRoute.getPartialContentRange("10-"));
+    }
+
+    @Test
+    public void getPartialContentRangeTest4() {
+        Map<String,String> testRange = new HashMap<>();
+        testRange.put("Start", "0");
+        testRange.put("End", "-1");
+        ResponseRoute responseRoute = new ResponseRoute();
+        Assert.assertEquals(testRange, responseRoute.getPartialContentRange("-"));
+    }
+
 }

@@ -9,6 +9,7 @@
 /Users/jonathangraham/code/http-server/src/test/java/com/jgraham/httpserver/ResponseBuilderTests/PartialContentBuilderTest.java
 /Users/jonathangraham/code/http-server/src/test/java/com/jgraham/httpserver/mocks/MockResponseBuilder.java
 /Users/jonathangraham/code/http-server/src/test/java/com/jgraham/httpserver/mocks/MockHttpServerSocket.java
+/Users/jonathangraham/code/http-server/src/test/java/com/jgraham/httpserver/ResponseBuilderTests/ParameterDecodeBuilderTest.java
 /Users/jonathangraham/code/http-server/src/test/java/com/jgraham/httpserver/RequestsTests/RequestTest.java
 /Users/jonathangraham/code/http-server/src/test/java/com/jgraham/httpserver/mocks/MockHttpSocket.java
 /Users/jonathangraham/code/http-server/src/test/java/com/jgraham/httpserver/ResponseBuilderTests/FourOhFourBuilderTest.java

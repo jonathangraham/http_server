@@ -133,4 +133,16 @@ public class ResponseRouteTest {
         Assert.assertEquals(testRange, responseRoute.getPartialContentRange("-"));
     }
 
+    @Test
+    public void getParameterDecodeBuilderTest() {
+        Map<String,String> parsedRequestComponents = new HashMap<>();
+        parsedRequestComponents.put("RequestType", "GET");
+        parsedRequestComponents.put("RequestURL", "/anything?ghjd");
+        parsedRequestComponents.put("RequestHTTPVersion", "HTTP/1.1");
+        parsedRequestComponents.put("RequestHeader", "");
+        Request request = new Request(parsedRequestComponents);
+        ResponseRoute responseRoute = new ResponseRoute(null);
+        Assert.assertEquals(responseRoute.getResponseBuilder(request).getClass(), new ParameterDecodeBuilder("/anything?ghjd").getClass());
+    }
+
 }

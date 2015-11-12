@@ -49,6 +49,9 @@ public class ResponseRoute implements iResponseRoute {
         else if (new File(getFilePath(getRoute(directory), path)).exists()) {
             responseBuilder = new FileContentsBuilder(path);
         }
+        else if (path.contains("?")) {
+            responseBuilder = new ParameterDecodeBuilder(path);
+        }
         else {
             responseBuilder = new FourOhFourBuilder();
         }

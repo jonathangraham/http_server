@@ -39,11 +39,7 @@ public class FileContentsBuilder implements iResponseBuilder {
         String relPath = directory + path;
         String absPath = System.getProperty("user.dir") + relPath;
 
-
-
-
         ByteArrayOutputStream output = new ByteArrayOutputStream();
-//        try (InputStream file = ClassLoader.class.getResourceAsStream(path)) {
         try (InputStream file = new FileInputStream(absPath) {
             @Override
             public int read() throws IOException {

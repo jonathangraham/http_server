@@ -13,4 +13,6 @@ public class MockResponseBuilder implements iResponseBuilder {
     public byte[] getResponse() {
         return response;
     }
+
+    public void modifyFile() throws Exception {}
 }

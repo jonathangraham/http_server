@@ -3,10 +3,7 @@ package com.jgraham.httpserver.Responses;
 import com.jgraham.httpserver.Requests.Request;
 import com.jgraham.httpserver.ResponseBuilder.*;
 
-
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 
 public class ResponseRoute implements iResponseRoute {
 
@@ -23,6 +20,9 @@ public class ResponseRoute implements iResponseRoute {
         String verb = request.getRequestType();
         if (verb.equals("GET")) {
             getGETResponseBuilder(path, header, directory);
+        }
+        else if (verb.equals("PATCH")) {
+            getPATCHResponseBuilder(header, path);
         }
         else {
             getOtherResponseBuilder(path, directory, verb);
@@ -41,16 +41,15 @@ public class ResponseRoute implements iResponseRoute {
             responseBuilder = new RedirectBuilder();
         }
         else if (header.contains("Range")) {
-//            Map<String, String> range = getPartialContentRange(header.split("=")[1]);
             responseBuilder = new PartialContentBuilder(header, path);
         }
-        else if (path.contains("/form") && (new File(getFilePath(getRoute(directory), path)).exists())) {
+        else if (path.contains("/form") && (new File(getRoute(directory, path)).exists())) {
             responseBuilder = new FileContentsBuilder(path, directory);
         }
         else if (path.contains("/form")) {
             responseBuilder = new Status200Builder();
         }
-        else if (new File(getFilePath(getRoute(directory), path)).exists()) {
+        else if (new File(getRoute(directory, path)).exists()) {
             responseBuilder = new FileContentsBuilder(path, directory);
         }
         else if (path.contains("?")) {
@@ -67,10 +66,10 @@ public class ResponseRoute implements iResponseRoute {
             responseBuilder = new MethodOptionsBuilder();
         }
         else if (path.equals("/form")) {
-            modifyForm(path, directory, verb);
-            responseBuilder = new Status200Builder();
+            File f = new File(getRoute(directory, path));
+            responseBuilder = new FormResponseBuilder(verb, f);
         }
-        else if (new File(getFilePath(getRoute(directory), path)).exists()) {
+        else if (new File(getRoute(directory, path)).exists()) {
             responseBuilder = new MethodNotAllowedBuilder();
         }
         else {
@@ -78,30 +77,13 @@ public class ResponseRoute implements iResponseRoute {
         }
     }
 
-    private void modifyForm(String path, String directory, String verb) throws IOException {
-        File f = new File(getFilePath(getRoute(directory), path));
-        FileWriter file = new FileWriter(f, false);
-        if (verb.equals("PUT")) {
-            file.write("data=heathcliff");
-            file.flush();
-            file.close();
-        }
-        else if (verb.equals("POST")) {
-            file.write("data=fatcat");
-            file.flush();
-            file.close();
-        }
-        else {
-            f.delete();
-        }
+    private void getPATCHResponseBuilder(String header, String path) {
+        File f = new File(getRoute(directory, path));
+        responseBuilder = new PatchResponseBuilder(header, f);
     }
 
-    private String getRoute(String directory) {
-        return (System.getProperty("user.dir")) + directory;
-    }
-
-    private String getFilePath(String route, String path) {
-        return (route + path);
+    private String getRoute(String directory, String path) {
+        return (System.getProperty("user.dir")) + directory + path;
     }
 
 }

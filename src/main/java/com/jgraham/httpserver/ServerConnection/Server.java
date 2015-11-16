@@ -33,6 +33,7 @@ public class Server {
         ResponseRoute responseRoute = getResponseRoute();
         iResponseBuilder responseBuilder = getResponseBuilder(responseRoute, request);
         byte[] response = getResponse(responseBuilder);
+        modifyFile(responseBuilder);
         writeResponse(clientSocket, response);
     }
 
@@ -62,17 +63,20 @@ public class Server {
         return request;
     }
 
-    private ResponseRoute getResponseRoute() {
+    public ResponseRoute getResponseRoute() {
         return new ResponseRoute(directory);
     }
 
-    private iResponseBuilder getResponseBuilder(ResponseRoute responseRoute, Request request) throws Exception {
+    public iResponseBuilder getResponseBuilder(ResponseRoute responseRoute, Request request) throws Exception {
         return responseRoute.getResponseBuilder(request);
     }
 
     public byte[] getResponse(iResponseBuilder responseBuilder) throws Exception {
-
         return responseBuilder.getResponse();
+    }
+
+    public void modifyFile(iResponseBuilder responseBuilder) throws Exception {
+        responseBuilder.modifyFile();
     }
 
     public void writeResponse(iHttpSocket clientSocket, byte[] response) throws Exception {

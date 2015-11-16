@@ -10,6 +10,8 @@ public class RedirectBuilder implements iResponseBuilder {
         return response.toString().getBytes();
     }
 
+    public void modifyFile() throws Exception {}
+
     private String getStatusLine() {
         return "HTTP/1.1 302 Found\r\n";
     }

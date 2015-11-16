@@ -17,6 +17,8 @@ public class ParameterDecodeBuilder implements iResponseBuilder {
         return response.toByteArray();
     }
 
+    public void modifyFile() throws Exception {}
+
     private String getStatusLine() {
         return "HTTP/1.1 200 OK\r\n";
     }

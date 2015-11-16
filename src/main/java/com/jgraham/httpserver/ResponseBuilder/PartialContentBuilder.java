@@ -24,6 +24,8 @@ public class PartialContentBuilder implements iResponseBuilder {
         return response.toByteArray();
     }
 
+    public void modifyFile() throws Exception {}
+
     private String getStatusLine() {
         return "HTTP/1.1 206 Partial Content\r\n";
     }

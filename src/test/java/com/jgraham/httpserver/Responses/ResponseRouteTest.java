@@ -189,6 +189,42 @@ public class ResponseRouteTest {
         Assert.assertEquals(responseRoute.getResponseBuilder(request).getClass(), new PatchResponseBuilder(null, null).getClass());
     }
 
+    @Test
+    public void getBasicAuthenticationBuilderTest() throws Exception {
+        Map<String, String> parsedRequestComponents = new HashMap<>();
+        parsedRequestComponents.put("RequestType", "GET");
+        parsedRequestComponents.put("RequestURL", "/logs");
+        parsedRequestComponents.put("RequestHTTPVersion", "HTTP/1.1");
+        parsedRequestComponents.put("RequestHeader", "Authorization: Basic YWRtaW46aHVudGVyMg==");
+        Request request = new Request(parsedRequestComponents);
+        iResponseRoute responseRoute = new ResponseRoute("/src/main/resources");
+        Assert.assertEquals(responseRoute.getResponseBuilder(request).getClass(), new BasicAuthenticationBuilder().getClass());
+    }
+
+    @Test
+    public void getBasicAuthenticationRequiredBuilderWhenWrongAuthenticationTest() throws Exception {
+        Map<String, String> parsedRequestComponents = new HashMap<>();
+        parsedRequestComponents.put("RequestType", "GET");
+        parsedRequestComponents.put("RequestURL", "/logs");
+        parsedRequestComponents.put("RequestHTTPVersion", "HTTP/1.1");
+        parsedRequestComponents.put("RequestHeader", "Authorization: Basic YWRtaW46aHVudGVyMg==j");
+        Request request = new Request(parsedRequestComponents);
+        iResponseRoute responseRoute = new ResponseRoute("/src/main/resources");
+        Assert.assertEquals(responseRoute.getResponseBuilder(request).getClass(), new BasicAuthenticationRequiredBuilder().getClass());
+    }
+
+    @Test
+    public void getBasicAuthenticationRequiredBuilderWhenNoAuthorizationTest() throws Exception {
+        Map<String, String> parsedRequestComponents = new HashMap<>();
+        parsedRequestComponents.put("RequestType", "GET");
+        parsedRequestComponents.put("RequestURL", "/logs");
+        parsedRequestComponents.put("RequestHTTPVersion", "HTTP/1.1");
+        parsedRequestComponents.put("RequestHeader", "");
+        Request request = new Request(parsedRequestComponents);
+        iResponseRoute responseRoute = new ResponseRoute("/src/main/resources");
+        Assert.assertEquals(responseRoute.getResponseBuilder(request).getClass(), new BasicAuthenticationRequiredBuilder().getClass());
+    }
+
     private void createFile() throws Exception {
         String path = System.getProperty("user.dir") + "/src/main/resources/form";
         File f = new File(path);

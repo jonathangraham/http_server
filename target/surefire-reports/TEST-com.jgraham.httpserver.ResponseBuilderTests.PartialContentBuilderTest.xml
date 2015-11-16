@@ -67,6 +67,6 @@
   <testcase classname="com.jgraham.httpserver.ResponseBuilderTests.PartialContentBuilderTest" name="returnsPartialContentsResponse2" time="0"/>
   <testcase classname="com.jgraham.httpserver.ResponseBuilderTests.PartialContentBuilderTest" name="returnsPartialContentsResponse3" time="0"/>
   <testcase classname="com.jgraham.httpserver.ResponseBuilderTests.PartialContentBuilderTest" name="returnsPartialContentsResponse4" time="0"/>
-  <testcase classname="com.jgraham.httpserver.ResponseBuilderTests.PartialContentBuilderTest" name="returnsPartialContentsResponse5" time="0.001"/>
-  <testcase classname="com.jgraham.httpserver.ResponseBuilderTests.PartialContentBuilderTest" name="returnsPartialContentsResponse6" time="0"/>
+  <testcase classname="com.jgraham.httpserver.ResponseBuilderTests.PartialContentBuilderTest" name="returnsPartialContentsResponse5" time="0"/>
+  <testcase classname="com.jgraham.httpserver.ResponseBuilderTests.PartialContentBuilderTest" name="returnsPartialContentsResponse6" time="0.001"/>
 </testsuite>

@@ -18,7 +18,10 @@ public class ResponseRoute implements iResponseRoute {
         String path = request.getRequestURL();
         String header = request.getRequestHeader();
         String verb = request.getRequestType();
-        if (verb.equals("GET")) {
+        if (header.contains("Authorization")) {
+            getAuthenticationBuilder(header);
+        }
+        else if (verb.equals("GET")) {
             getGETResponseBuilder(path, header, directory);
         }
         else if (verb.equals("PATCH")) {
@@ -55,6 +58,9 @@ public class ResponseRoute implements iResponseRoute {
         else if (path.contains("?")) {
             responseBuilder = new ParameterDecodeBuilder(path);
         }
+        else if (path.equals("/logs")) {
+            responseBuilder = new BasicAuthenticationRequiredBuilder();
+        }
         else {
             responseBuilder = new FourOhFourBuilder();
         }
@@ -84,6 +90,21 @@ public class ResponseRoute implements iResponseRoute {
 
     private String getRoute(String directory, String path) {
         return (System.getProperty("user.dir")) + directory + path;
+    }
+
+    private void getAuthenticationBuilder(String header) {
+        Boolean authorized = isAuthorized(header);
+        if (authorized == true) {
+            responseBuilder = new BasicAuthenticationBuilder();
+        }
+        else {
+            responseBuilder = new BasicAuthenticationRequiredBuilder();
+        }
+    }
+
+    private Boolean isAuthorized(String header) {
+        String credentials = header.split(" ")[2];
+        return (credentials.equals("YWRtaW46aHVudGVyMg=="));
     }
 
 }

@@ -1,4 +1,5 @@
 /Users/jonathangraham/code/http-server/src/test/java/com/jgraham/httpserver/Responses/ResponseRouteTest.java
+/Users/jonathangraham/code/http-server/src/test/java/com/jgraham/httpserver/ResponseBuilderTests/BasicAuthenticationRequiredTest.java
 /Users/jonathangraham/code/http-server/src/test/java/com/jgraham/httpserver/ResponseBuilderTests/FileContentsBuilderTest.java
 /Users/jonathangraham/code/http-server/src/test/java/com/jgraham/httpserver/ResponseBuilderTests/RedirectBuilderTest.java
 /Users/jonathangraham/code/http-server/src/test/java/com/jgraham/httpserver/ResponseBuilderTests/Status200BuilderTest.java
@@ -11,6 +12,7 @@
 /Users/jonathangraham/code/http-server/src/test/java/com/jgraham/httpserver/mocks/MockResponseBuilder.java
 /Users/jonathangraham/code/http-server/src/test/java/com/jgraham/httpserver/mocks/MockHttpServerSocket.java
 /Users/jonathangraham/code/http-server/src/test/java/com/jgraham/httpserver/ResponseBuilderTests/ParameterDecodeBuilderTest.java
+/Users/jonathangraham/code/http-server/src/test/java/com/jgraham/httpserver/ResponseBuilderTests/BasicAuthenticationBuilderTest.java
 /Users/jonathangraham/code/http-server/src/test/java/com/jgraham/httpserver/RequestsTests/RequestTest.java
 /Users/jonathangraham/code/http-server/src/test/java/com/jgraham/httpserver/mocks/MockHttpSocket.java
 /Users/jonathangraham/code/http-server/src/test/java/com/jgraham/httpserver/ResponseBuilderTests/FourOhFourBuilderTest.java

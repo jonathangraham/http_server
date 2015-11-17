@@ -5,12 +5,12 @@ import com.jgraham.httpserver.ResponseBuilder.*;
 
 import java.io.File;
 
-public class ResponseRoute implements iResponseRoute {
+public class CobspecRouter implements iResponseRoute {
 
     private String directory;
     private iResponseBuilder responseBuilder;
 
-    public ResponseRoute(String directory) {
+    public CobspecRouter(String directory) {
         this.directory = directory;
     }
 

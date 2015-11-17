@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="17" failures="0" name="com.jgraham.httpserver.Responses.ResponseRouteTest" time="0" errors="0" skipped="0">
+<testsuite tests="17" failures="0" name="com.jgraham.httpserver.Responses.ResponseRouteTest" time="0.006" errors="0" skipped="0">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="sun.boot.library.path" value="/Library/Java/JavaVirtualMachines/jdk1.8.0_05.jdk/Contents/Home/jre/lib"/>
@@ -64,11 +64,11 @@
     <property name="sun.cpu.isalist" value=""/>
   </properties>
   <testcase classname="com.jgraham.httpserver.Responses.ResponseRouteTest" name="getFourOhFourBuilderTest" time="0"/>
-  <testcase classname="com.jgraham.httpserver.Responses.ResponseRouteTest" name="getFileContentsBuilderWithGetWhenFormExistsTest" time="0"/>
-  <testcase classname="com.jgraham.httpserver.Responses.ResponseRouteTest" name="getBasicAuthenticationRequiredBuilderWhenNoAuthorizationTest" time="0"/>
-  <testcase classname="com.jgraham.httpserver.Responses.ResponseRouteTest" name="getFormResponseBuilderWithPostFormTest" time="0"/>
+  <testcase classname="com.jgraham.httpserver.Responses.ResponseRouteTest" name="getFileContentsBuilderWithGetWhenFormExistsTest" time="0.001"/>
+  <testcase classname="com.jgraham.httpserver.Responses.ResponseRouteTest" name="getBasicAuthenticationRequiredBuilderWhenNoAuthorizationTest" time="0.001"/>
+  <testcase classname="com.jgraham.httpserver.Responses.ResponseRouteTest" name="getFormResponseBuilderWithPostFormTest" time="0.003"/>
   <testcase classname="com.jgraham.httpserver.Responses.ResponseRouteTest" name="getFileDirectoryBuilderTest" time="0"/>
-  <testcase classname="com.jgraham.httpserver.Responses.ResponseRouteTest" name="getParameterDecodeBuilderTest" time="0"/>
+  <testcase classname="com.jgraham.httpserver.Responses.ResponseRouteTest" name="getParameterDecodeBuilderTest" time="0.001"/>
   <testcase classname="com.jgraham.httpserver.Responses.ResponseRouteTest" name="getFormResponseBuilderWithDeleteFormTest" time="0"/>
   <testcase classname="com.jgraham.httpserver.Responses.ResponseRouteTest" name="getPatchResponseBuilderTest" time="0"/>
   <testcase classname="com.jgraham.httpserver.Responses.ResponseRouteTest" name="getBasicAuthenticationBuilderTest" time="0"/>

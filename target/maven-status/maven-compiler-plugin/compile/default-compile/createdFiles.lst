@@ -4,4 +4,3 @@ com/jgraham/httpserver/ResponseBuilder/MethodOptionsBuilder.class
 com/jgraham/httpserver/ResponseBuilder/FileDirectoryBuilder.class
 com/jgraham/httpserver/ResponseBuilder/RedirectBuilder.class
 com/jgraham/httpserver/ServerConnection/Server.class
-com/jgraham/httpserver/Responses/ResponseRoute.class

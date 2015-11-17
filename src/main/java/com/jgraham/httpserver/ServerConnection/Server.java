@@ -3,7 +3,7 @@ package com.jgraham.httpserver.ServerConnection;
 import com.jgraham.httpserver.Requests.Request;
 import com.jgraham.httpserver.Requests.RequestParser;
 import com.jgraham.httpserver.ResponseBuilder.iResponseBuilder;
-import com.jgraham.httpserver.Responses.ResponseRoute;
+import com.jgraham.httpserver.Responses.iResponseRoute;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,17 +12,18 @@ import java.io.OutputStream;
 
 public class Server {
 
-    private iHttpServerSocket serverSocket;
-    private String directory;
+    private iResponseRoute appRouter;
+    private int port;
 
-    public Server(iHttpServerSocket serverSocket, String directory) {
-        this.serverSocket = serverSocket;
-        this.directory = directory;
+    public Server(int port, iResponseRoute appRouter) {
+        this.port = port;
+        this.appRouter = appRouter;
     }
 
     public void start() throws Exception {
+        iHttpServerSocket serverSocket = new HttpServerSocket(port);
         while (true) {
-            iHttpSocket clientSocket = acceptConnection();
+            iHttpSocket clientSocket = acceptConnection(serverSocket);
             actOnConnection(clientSocket);
         }
     }
@@ -30,15 +31,10 @@ public class Server {
     public void actOnConnection(iHttpSocket clientSocket) throws Exception {
         String rawRequest = getRawRequest(clientSocket);
         Request request = getNewRequest(rawRequest);
-        ResponseRoute responseRoute = getResponseRoute();
-        iResponseBuilder responseBuilder = getResponseBuilder(responseRoute, request);
+        iResponseBuilder responseBuilder = getResponseBuilder(appRouter, request);
         byte[] response = getResponse(responseBuilder);
         modifyFile(responseBuilder);
         writeResponse(clientSocket, response);
-    }
-
-    public void close() throws Exception {
-        serverSocket.close();
     }
 
     public String getRawRequest(iHttpSocket clientSocket) throws Exception {
@@ -63,11 +59,7 @@ public class Server {
         return request;
     }
 
-    public ResponseRoute getResponseRoute() {
-        return new ResponseRoute(directory);
-    }
-
-    public iResponseBuilder getResponseBuilder(ResponseRoute responseRoute, Request request) throws Exception {
+    public iResponseBuilder getResponseBuilder(iResponseRoute responseRoute, Request request) throws Exception {
         return responseRoute.getResponseBuilder(request);
     }
 
@@ -85,7 +77,7 @@ public class Server {
         out.close();
     }
 
-    public iHttpSocket acceptConnection() throws Exception {
+    public iHttpSocket acceptConnection(iHttpServerSocket serverSocket) throws Exception {
         return serverSocket.accept();
     }
 }

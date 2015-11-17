@@ -9,7 +9,7 @@ import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ResponseRouteTest {
+public class CobspecRouterTest {
 
     @Test
     public void getMethodOptionsBuilderTestWithGet() throws Exception{
@@ -19,8 +19,8 @@ public class ResponseRouteTest {
         parsedRequestComponents.put("RequestHTTPVersion", "HTTP/1.1");
         parsedRequestComponents.put("RequestHeader", "");
         Request request = new Request(parsedRequestComponents);
-        ResponseRoute responseRoute = new ResponseRoute(null);
-        Assert.assertEquals(responseRoute.getResponseBuilder(request).getClass(), new MethodOptionsBuilder().getClass());
+        CobspecRouter cobspecRouter = new CobspecRouter(null);
+        Assert.assertEquals(cobspecRouter.getResponseBuilder(request).getClass(), new MethodOptionsBuilder().getClass());
     }
 
     @Test
@@ -31,8 +31,8 @@ public class ResponseRouteTest {
         parsedRequestComponents.put("RequestHTTPVersion", "HTTP/1.1");
         parsedRequestComponents.put("RequestHeader", "");
         Request request = new Request(parsedRequestComponents);
-        ResponseRoute responseRoute = new ResponseRoute(null);
-        Assert.assertEquals(responseRoute.getResponseBuilder(request).getClass(), new MethodOptionsBuilder().getClass());
+        CobspecRouter cobspecRouter = new CobspecRouter(null);
+        Assert.assertEquals(cobspecRouter.getResponseBuilder(request).getClass(), new MethodOptionsBuilder().getClass());
     }
 
     @Test
@@ -43,8 +43,8 @@ public class ResponseRouteTest {
         parsedRequestComponents.put("RequestHTTPVersion", "HTTP/1.1");
         parsedRequestComponents.put("RequestHeader", "");
         Request request = new Request(parsedRequestComponents);
-        ResponseRoute responseRoute = new ResponseRoute(null);
-        Assert.assertEquals(responseRoute.getResponseBuilder(request).getClass(), new FileDirectoryBuilder(null).getClass());
+        CobspecRouter cobspecRouter = new CobspecRouter(null);
+        Assert.assertEquals(cobspecRouter.getResponseBuilder(request).getClass(), new FileDirectoryBuilder(null).getClass());
     }
 
     @Test
@@ -55,8 +55,8 @@ public class ResponseRouteTest {
         parsedRequestComponents.put("RequestHTTPVersion", "HTTP/1.1");
         parsedRequestComponents.put("RequestHeader", "");
         Request request = new Request(parsedRequestComponents);
-        ResponseRoute responseRoute = new ResponseRoute("/src/main/resources");
-        Assert.assertEquals(responseRoute.getResponseBuilder(request).getClass(), new FileContentsBuilder(null, null).getClass());
+        CobspecRouter cobspecRouter = new CobspecRouter("/src/main/resources");
+        Assert.assertEquals(cobspecRouter.getResponseBuilder(request).getClass(), new FileContentsBuilder(null, null).getClass());
     }
 
     @Test
@@ -67,8 +67,8 @@ public class ResponseRouteTest {
         parsedRequestComponents.put("RequestHTTPVersion", "HTTP/1.1");
         parsedRequestComponents.put("RequestHeader", "");
         Request request = new Request(parsedRequestComponents);
-        ResponseRoute responseRoute = new ResponseRoute(null);
-        Assert.assertEquals(responseRoute.getResponseBuilder(request).getClass(), new FourOhFourBuilder().getClass());
+        CobspecRouter cobspecRouter = new CobspecRouter(null);
+        Assert.assertEquals(cobspecRouter.getResponseBuilder(request).getClass(), new FourOhFourBuilder().getClass());
     }
 
     @Test
@@ -79,8 +79,8 @@ public class ResponseRouteTest {
         parsedRequestComponents.put("RequestHTTPVersion", "HTTP/1.1");
         parsedRequestComponents.put("RequestHeader", "");
         Request request = new Request(parsedRequestComponents);
-        ResponseRoute responseRoute = new ResponseRoute(null);
-        Assert.assertEquals(responseRoute.getResponseBuilder(request).getClass(), new RedirectBuilder().getClass());
+        CobspecRouter cobspecRouter = new CobspecRouter(null);
+        Assert.assertEquals(cobspecRouter.getResponseBuilder(request).getClass(), new RedirectBuilder().getClass());
     }
 
     @Test
@@ -91,8 +91,8 @@ public class ResponseRouteTest {
         parsedRequestComponents.put("RequestHTTPVersion", "HTTP/1.1");
         parsedRequestComponents.put("RequestHeader", "Range=0-10");
         Request request = new Request(parsedRequestComponents);
-        ResponseRoute responseRoute = new ResponseRoute(null);
-        Assert.assertEquals(responseRoute.getResponseBuilder(request).getClass(), new PartialContentBuilder("Range=0-10", "/partial_content.txt").getClass());
+        CobspecRouter cobspecRouter = new CobspecRouter(null);
+        Assert.assertEquals(cobspecRouter.getResponseBuilder(request).getClass(), new PartialContentBuilder("Range=0-10", "/partial_content.txt").getClass());
     }
 
     @Test
@@ -103,8 +103,8 @@ public class ResponseRouteTest {
         parsedRequestComponents.put("RequestHTTPVersion", "HTTP/1.1");
         parsedRequestComponents.put("RequestHeader", "");
         Request request = new Request(parsedRequestComponents);
-        ResponseRoute responseRoute = new ResponseRoute(null);
-        Assert.assertEquals(responseRoute.getResponseBuilder(request).getClass(), new ParameterDecodeBuilder("/anything?ghjd").getClass());
+        CobspecRouter cobspecRouter = new CobspecRouter(null);
+        Assert.assertEquals(cobspecRouter.getResponseBuilder(request).getClass(), new ParameterDecodeBuilder("/anything?ghjd").getClass());
     }
 
     @Test
@@ -119,7 +119,7 @@ public class ResponseRouteTest {
         parsedRequestComponents.put("RequestHTTPVersion", "HTTP/1.1");
         parsedRequestComponents.put("RequestHeader", "");
         Request request = new Request(parsedRequestComponents);
-        iResponseRoute responseRoute = new ResponseRoute("/src/main/resources");
+        iResponseRoute responseRoute = new CobspecRouter("/src/main/resources");
         Assert.assertEquals(responseRoute.getResponseBuilder(request).getClass(), new Status200Builder().getClass());
     }
 
@@ -131,7 +131,7 @@ public class ResponseRouteTest {
         parsedRequestComponents.put("RequestHTTPVersion", "HTTP/1.1");
         parsedRequestComponents.put("RequestHeader", "");
         Request request = new Request(parsedRequestComponents);
-        iResponseRoute responseRoute = new ResponseRoute("/src/main/resources");
+        iResponseRoute responseRoute = new CobspecRouter("/src/main/resources");
         createFile();
         Assert.assertEquals(responseRoute.getResponseBuilder(request).getClass(), new FileContentsBuilder(null, null).getClass());
         deleteFile();
@@ -146,7 +146,7 @@ public class ResponseRouteTest {
         parsedRequestComponents.put("RequestHTTPVersion", "HTTP/1.1");
         parsedRequestComponents.put("RequestHeader", "");
         Request request = new Request(parsedRequestComponents);
-        iResponseRoute responseRoute = new ResponseRoute("/src/main/resources");
+        iResponseRoute responseRoute = new CobspecRouter("/src/main/resources");
         Assert.assertEquals(responseRoute.getResponseBuilder(request).getClass(), new FormResponseBuilder(null, null).getClass());
     }
 
@@ -159,7 +159,7 @@ public class ResponseRouteTest {
         parsedRequestComponents.put("RequestHTTPVersion", "HTTP/1.1");
         parsedRequestComponents.put("RequestHeader", "");
         Request request = new Request(parsedRequestComponents);
-        iResponseRoute responseRoute = new ResponseRoute("/src/main/resources");
+        iResponseRoute responseRoute = new CobspecRouter("/src/main/resources");
         Assert.assertEquals(responseRoute.getResponseBuilder(request).getClass(), new FormResponseBuilder(null, null).getClass());
     }
 
@@ -172,7 +172,7 @@ public class ResponseRouteTest {
         parsedRequestComponents.put("RequestHTTPVersion", "HTTP/1.1");
         parsedRequestComponents.put("RequestHeader", "");
         Request request = new Request(parsedRequestComponents);
-        iResponseRoute responseRoute = new ResponseRoute("/src/main/resources");
+        iResponseRoute responseRoute = new CobspecRouter("/src/main/resources");
         Assert.assertEquals(responseRoute.getResponseBuilder(request).getClass(), new FormResponseBuilder(null, null).getClass());
     }
 
@@ -185,7 +185,7 @@ public class ResponseRouteTest {
         parsedRequestComponents.put("RequestHTTPVersion", "HTTP/1.1");
         parsedRequestComponents.put("RequestHeader", "");
         Request request = new Request(parsedRequestComponents);
-        iResponseRoute responseRoute = new ResponseRoute("/src/main/resources");
+        iResponseRoute responseRoute = new CobspecRouter("/src/main/resources");
         Assert.assertEquals(responseRoute.getResponseBuilder(request).getClass(), new PatchResponseBuilder(null, null).getClass());
     }
 
@@ -197,7 +197,7 @@ public class ResponseRouteTest {
         parsedRequestComponents.put("RequestHTTPVersion", "HTTP/1.1");
         parsedRequestComponents.put("RequestHeader", "Authorization: Basic YWRtaW46aHVudGVyMg==");
         Request request = new Request(parsedRequestComponents);
-        iResponseRoute responseRoute = new ResponseRoute("/src/main/resources");
+        iResponseRoute responseRoute = new CobspecRouter("/src/main/resources");
         Assert.assertEquals(responseRoute.getResponseBuilder(request).getClass(), new BasicAuthenticationBuilder().getClass());
     }
 
@@ -209,7 +209,7 @@ public class ResponseRouteTest {
         parsedRequestComponents.put("RequestHTTPVersion", "HTTP/1.1");
         parsedRequestComponents.put("RequestHeader", "Authorization: Basic YWRtaW46aHVudGVyMg==j");
         Request request = new Request(parsedRequestComponents);
-        iResponseRoute responseRoute = new ResponseRoute("/src/main/resources");
+        iResponseRoute responseRoute = new CobspecRouter("/src/main/resources");
         Assert.assertEquals(responseRoute.getResponseBuilder(request).getClass(), new BasicAuthenticationRequiredBuilder().getClass());
     }
 
@@ -221,7 +221,7 @@ public class ResponseRouteTest {
         parsedRequestComponents.put("RequestHTTPVersion", "HTTP/1.1");
         parsedRequestComponents.put("RequestHeader", "");
         Request request = new Request(parsedRequestComponents);
-        iResponseRoute responseRoute = new ResponseRoute("/src/main/resources");
+        iResponseRoute responseRoute = new CobspecRouter("/src/main/resources");
         Assert.assertEquals(responseRoute.getResponseBuilder(request).getClass(), new BasicAuthenticationRequiredBuilder().getClass());
     }
 

@@ -1,4 +1,3 @@
-/Users/jonathangraham/code/http-server/src/main/java/com/jgraham/httpserver/Responses/ModifyFile.java
 /Users/jonathangraham/code/http-server/src/main/java/com/jgraham/httpserver/ResponseBuilder/BasicAuthenticationRequiredBuilder.java
 /Users/jonathangraham/code/http-server/src/main/java/com/jgraham/httpserver/HttpServerMain.java
 /Users/jonathangraham/code/http-server/src/main/java/com/jgraham/httpserver/ResponseBuilder/PatchResponseBuilder.java
@@ -11,6 +10,7 @@
 /Users/jonathangraham/code/http-server/src/main/java/com/jgraham/httpserver/Requests/Request.java
 /Users/jonathangraham/code/http-server/src/main/java/com/jgraham/httpserver/ServerConnection/HttpServerSocket.java
 /Users/jonathangraham/code/http-server/src/main/java/com/jgraham/httpserver/ServerConnection/Server.java
+/Users/jonathangraham/code/http-server/src/main/java/com/jgraham/httpserver/Responses/FileModifier.java
 /Users/jonathangraham/code/http-server/src/main/java/com/jgraham/httpserver/ResponseBuilder/ParameterDecodeBuilder.java
 /Users/jonathangraham/code/http-server/src/main/java/com/jgraham/httpserver/ResponseBuilder/FourOhFourBuilder.java
 /Users/jonathangraham/code/http-server/src/main/java/com/jgraham/httpserver/ResponseBuilder/Status200Builder.java
@@ -21,6 +21,7 @@
 /Users/jonathangraham/code/http-server/src/main/java/com/jgraham/httpserver/Responses/iResponseRoute.java
 /Users/jonathangraham/code/http-server/src/main/java/com/jgraham/httpserver/ResponseBuilder/BasicAuthenticationBuilder.java
 /Users/jonathangraham/code/http-server/src/main/java/com/jgraham/httpserver/ServerConnection/iHttpServerSocket.java
+/Users/jonathangraham/code/http-server/src/main/java/com/jgraham/httpserver/Responses/iFileModifier.java
 /Users/jonathangraham/code/http-server/src/main/java/com/jgraham/httpserver/ResponseBuilder/iResponseBuilder.java
 /Users/jonathangraham/code/http-server/src/main/java/com/jgraham/httpserver/ResponseBuilder/MethodNotAllowedBuilder.java
 /Users/jonathangraham/code/http-server/src/main/java/com/jgraham/httpserver/ServerConnection/iHttpSocket.java

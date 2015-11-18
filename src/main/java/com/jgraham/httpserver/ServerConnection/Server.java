@@ -3,7 +3,7 @@ package com.jgraham.httpserver.ServerConnection;
 import com.jgraham.httpserver.Requests.Request;
 import com.jgraham.httpserver.Requests.RequestParser;
 import com.jgraham.httpserver.ResponseBuilder.iResponseBuilder;
-import com.jgraham.httpserver.Responses.iResponseRoute;
+import com.jgraham.httpserver.Responses.iAppRouter;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,10 +12,10 @@ import java.io.OutputStream;
 
 public class Server {
 
-    private iResponseRoute appRouter;
+    private iAppRouter appRouter;
     private int port;
 
-    public Server(int port, iResponseRoute appRouter) {
+    public Server(int port, iAppRouter appRouter) {
         this.port = port;
         this.appRouter = appRouter;
     }
@@ -33,7 +33,6 @@ public class Server {
         Request request = getNewRequest(rawRequest);
         iResponseBuilder responseBuilder = getResponseBuilder(appRouter, request);
         byte[] response = getResponse(responseBuilder);
-        modifyFile(responseBuilder);
         writeResponse(clientSocket, response);
     }
 
@@ -59,16 +58,12 @@ public class Server {
         return request;
     }
 
-    public iResponseBuilder getResponseBuilder(iResponseRoute responseRoute, Request request) throws Exception {
+    public iResponseBuilder getResponseBuilder(iAppRouter responseRoute, Request request) throws Exception {
         return responseRoute.getResponseBuilder(request);
     }
 
     public byte[] getResponse(iResponseBuilder responseBuilder) throws Exception {
         return responseBuilder.getResponse();
-    }
-
-    public void modifyFile(iResponseBuilder responseBuilder) throws Exception {
-        responseBuilder.modifyFile();
     }
 
     public void writeResponse(iHttpSocket clientSocket, byte[] response) throws Exception {

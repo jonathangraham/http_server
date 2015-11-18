@@ -10,8 +10,6 @@ public class MethodNotAllowedBuilder implements iResponseBuilder {
         return response.toString().getBytes();
     }
 
-    public void modifyFile() throws Exception {}
-
     private String getStatusLine() {
         return "HTTP/1.1 405 Method Not Allowed\r\n";
     }

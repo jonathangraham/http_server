@@ -10,8 +10,6 @@ public class FourOhFourBuilder implements iResponseBuilder {
         return response.toString().getBytes();
     }
 
-    public void modifyFile() throws Exception {}
-
     private String getStatusLine() {
         return "HTTP/1.1 404 Not Found\r\n";
     }

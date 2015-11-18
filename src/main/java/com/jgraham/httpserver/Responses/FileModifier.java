@@ -4,22 +4,16 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class ModifyFile {
+public class FileModifier implements iFileModifier {
 
-    private File f;
-
-    public ModifyFile(File f) {
-        this.f = f;
-    }
-
-    public void modifyFile(String contents) throws IOException {
+    public void writeContentToFile(String contents, File f) throws IOException {
         FileWriter file = new FileWriter(f, false);
         file.write(contents);
         file.flush();
         file.close();
     }
 
-    public void deleteFile() {
+    public void deleteFile(File f) {
             f.delete();
     }
 }

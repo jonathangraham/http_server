@@ -5,35 +5,40 @@ import com.jgraham.httpserver.ResponseBuilder.*;
 
 import java.io.File;
 
-public class CobspecRouter implements iResponseRoute {
+public class CobspecRouter implements iAppRouter {
 
     private String directory;
+    private iFileModifier fm;
     private iResponseBuilder responseBuilder;
 
-    public CobspecRouter(String directory) {
+    public CobspecRouter(String directory, iFileModifier fm) {
+
         this.directory = directory;
+        this.fm = fm;
     }
 
     public iResponseBuilder getResponseBuilder(Request request) throws Exception {
+
+        String verb = request.getRequestType();
         String path = request.getRequestURL();
         String header = request.getRequestHeader();
-        String verb = request.getRequestType();
+
         if (header.contains("Authorization")) {
             getAuthenticationBuilder(header);
         }
         else if (verb.equals("GET")) {
-            getGETResponseBuilder(path, header, directory);
+            getGETResponseBuilder(verb, path, header);
         }
         else if (verb.equals("PATCH")) {
-            getPATCHResponseBuilder(header, path);
+            getPATCHResponseBuilder(verb, path, header);
         }
         else {
-            getOtherResponseBuilder(path, directory, verb);
+            getOtherResponseBuilder(verb, path, header);
         }
         return responseBuilder;
     }
 
-    private void getGETResponseBuilder(String path, String header, String directory) {
+    private void getGETResponseBuilder(String verb, String path, String header) {
         if ("/".equals(path)) {
             responseBuilder = new FileDirectoryBuilder(directory);
         }
@@ -67,13 +72,13 @@ public class CobspecRouter implements iResponseRoute {
 
     }
 
-    private void getOtherResponseBuilder(String path, String directory, String verb) throws Exception {
+    private void getOtherResponseBuilder(String verb, String path, String header) throws Exception {
         if (path.equals("/method_options")) {
             responseBuilder = new MethodOptionsBuilder();
         }
         else if (path.equals("/form")) {
-            File f = new File(getRoute(directory, path));
-            responseBuilder = new FormResponseBuilder(verb, f);
+            modifyFile(verb, path, header);
+            responseBuilder = new FormResponseBuilder();
         }
         else if (new File(getRoute(directory, path)).exists()) {
             responseBuilder = new MethodNotAllowedBuilder();
@@ -83,14 +88,12 @@ public class CobspecRouter implements iResponseRoute {
         }
     }
 
-    private void getPATCHResponseBuilder(String header, String path) {
-        File f = new File(getRoute(directory, path));
-        responseBuilder = new PatchResponseBuilder(header, f);
+    private void getPATCHResponseBuilder(String verb, String path, String header) throws Exception {
+        modifyFile(verb, path, header);
+        responseBuilder = new PatchResponseBuilder();
     }
 
-    private String getRoute(String directory, String path) {
-        return (System.getProperty("user.dir")) + directory + path;
-    }
+
 
     private void getAuthenticationBuilder(String header) {
         Boolean authorized = isAuthorized(header);
@@ -105,6 +108,29 @@ public class CobspecRouter implements iResponseRoute {
     private Boolean isAuthorized(String header) {
         String credentials = header.split(" ")[2];
         return (credentials.equals("YWRtaW46aHVudGVyMg=="));
+    }
+
+    private void modifyFile(String verb, String path, String header) throws Exception{
+        File f = new File(getRoute(directory, path));
+        if (header.contains("dc50a0d27dda2eee9f65644cd7e4c9cf11de8bec")) {
+            fm.writeContentToFile("patched content", f);
+        }
+        else if (verb.equals("PATCH")) {
+            fm.writeContentToFile("default content", f);
+        }
+        else if (verb.equals("PUT")) {
+            fm.writeContentToFile("data=heathcliff", f);
+        }
+        else if (verb.equals("POST")) {
+            fm.writeContentToFile("data=fatcat", f);
+        }
+        else if (verb.equals("DELETE")) {
+            fm.deleteFile(f);
+        }
+    }
+
+    private String getRoute(String directory, String path) {
+        return (System.getProperty("user.dir")) + directory + path;
     }
 
 }

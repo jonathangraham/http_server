@@ -7,15 +7,15 @@ import org.junit.Test;
 
 import java.io.File;
 
-public class ModifyFileTest {
+public class FileModifierTest {
 
     @Test
     public void createsNewFileIfDoesNotExistTest() throws Exception {
         String path = System.getProperty("user.dir") + "/src/main/resources/foobar";
         File f = new File(path);
         Assert.assertFalse(f.exists());
-        ModifyFile mf = new ModifyFile(f);
-        mf.modifyFile("hello");
+        FileModifier mf = new FileModifier();
+        mf.writeContentToFile("hello", f);
         Assert.assertTrue(f.exists());
 
         iResponseBuilder response = new FileContentsBuilder("/foobar", "/src/main/resources");
@@ -29,9 +29,9 @@ public class ModifyFileTest {
     public void modifiesFileTest() throws Exception {
         String path = System.getProperty("user.dir") + "/src/main/resources/foobar";
         File f = new File(path);
-        ModifyFile mf = new ModifyFile(f);
-        mf.modifyFile("hello");
-        mf.modifyFile("goodbye");
+        FileModifier mf = new FileModifier();
+        mf.writeContentToFile("hello", f);
+        mf.writeContentToFile("goodbye", f);
         Assert.assertTrue(f.exists());
 
         iResponseBuilder response = new FileContentsBuilder("/foobar", "/src/main/resources");
@@ -45,10 +45,10 @@ public class ModifyFileTest {
     public void deletesFileTest() throws Exception {
         String path = System.getProperty("user.dir") + "/src/main/resources/foobar";
         File f = new File(path);
-        ModifyFile mf = new ModifyFile(f);
-        mf.modifyFile("hello");
+        FileModifier mf = new FileModifier();
+        mf.writeContentToFile("hello", f);
         Assert.assertTrue(f.exists());
-        mf.deleteFile();
+        mf.deleteFile(f);
         Assert.assertFalse(f.exists());
     }
 }

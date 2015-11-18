@@ -1,12 +1,11 @@
-package com.jgraham.httpserver.Responses;
+package com.jgraham.httpserver.RoutersTest;
 
 import com.jgraham.httpserver.Requests.Request;
 import com.jgraham.httpserver.ResponseBuilder.*;
-import com.jgraham.httpserver.mocks.MockFileModifier;
+import com.jgraham.httpserver.Routers.CobspecRouter;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,7 +19,7 @@ public class CobspecRouterTest {
         parsedRequestComponents.put("RequestHTTPVersion", "HTTP/1.1");
         parsedRequestComponents.put("RequestHeader", "");
         Request request = new Request(parsedRequestComponents);
-        CobspecRouter cobspecRouter = new CobspecRouter(null, new MockFileModifier());
+        CobspecRouter cobspecRouter = new CobspecRouter(null);
         Assert.assertEquals(cobspecRouter.getResponseBuilder(request).getClass(), new MethodOptionsBuilder().getClass());
     }
 
@@ -32,7 +31,7 @@ public class CobspecRouterTest {
         parsedRequestComponents.put("RequestHTTPVersion", "HTTP/1.1");
         parsedRequestComponents.put("RequestHeader", "");
         Request request = new Request(parsedRequestComponents);
-        CobspecRouter cobspecRouter = new CobspecRouter(null, new MockFileModifier());
+        CobspecRouter cobspecRouter = new CobspecRouter(null);
         Assert.assertEquals(cobspecRouter.getResponseBuilder(request).getClass(), new MethodOptionsBuilder().getClass());
     }
 
@@ -44,7 +43,7 @@ public class CobspecRouterTest {
         parsedRequestComponents.put("RequestHTTPVersion", "HTTP/1.1");
         parsedRequestComponents.put("RequestHeader", "");
         Request request = new Request(parsedRequestComponents);
-        CobspecRouter cobspecRouter = new CobspecRouter(null, new MockFileModifier());
+        CobspecRouter cobspecRouter = new CobspecRouter(null);
         Assert.assertEquals(cobspecRouter.getResponseBuilder(request).getClass(), new FileDirectoryBuilder(null).getClass());
     }
 
@@ -56,7 +55,7 @@ public class CobspecRouterTest {
         parsedRequestComponents.put("RequestHTTPVersion", "HTTP/1.1");
         parsedRequestComponents.put("RequestHeader", "");
         Request request = new Request(parsedRequestComponents);
-        CobspecRouter cobspecRouter = new CobspecRouter("/src/main/resources", new MockFileModifier());
+        CobspecRouter cobspecRouter = new CobspecRouter("/src/main/resources");
         Assert.assertEquals(cobspecRouter.getResponseBuilder(request).getClass(), new FileContentsBuilder(null, null).getClass());
     }
 
@@ -68,7 +67,7 @@ public class CobspecRouterTest {
         parsedRequestComponents.put("RequestHTTPVersion", "HTTP/1.1");
         parsedRequestComponents.put("RequestHeader", "");
         Request request = new Request(parsedRequestComponents);
-        CobspecRouter cobspecRouter = new CobspecRouter(null, new MockFileModifier());
+        CobspecRouter cobspecRouter = new CobspecRouter(null);
         Assert.assertEquals(cobspecRouter.getResponseBuilder(request).getClass(), new FourOhFourBuilder().getClass());
     }
 
@@ -80,7 +79,7 @@ public class CobspecRouterTest {
         parsedRequestComponents.put("RequestHTTPVersion", "HTTP/1.1");
         parsedRequestComponents.put("RequestHeader", "");
         Request request = new Request(parsedRequestComponents);
-        CobspecRouter cobspecRouter = new CobspecRouter(null, new MockFileModifier());
+        CobspecRouter cobspecRouter = new CobspecRouter(null);
         Assert.assertEquals(cobspecRouter.getResponseBuilder(request).getClass(), new RedirectBuilder().getClass());
     }
 
@@ -92,7 +91,7 @@ public class CobspecRouterTest {
         parsedRequestComponents.put("RequestHTTPVersion", "HTTP/1.1");
         parsedRequestComponents.put("RequestHeader", "Range=0-10");
         Request request = new Request(parsedRequestComponents);
-        CobspecRouter cobspecRouter = new CobspecRouter(null, new MockFileModifier());
+        CobspecRouter cobspecRouter = new CobspecRouter(null);
         Assert.assertEquals(cobspecRouter.getResponseBuilder(request).getClass(), new PartialContentBuilder("Range=0-10", "/partial_content.txt").getClass());
     }
 
@@ -104,83 +103,59 @@ public class CobspecRouterTest {
         parsedRequestComponents.put("RequestHTTPVersion", "HTTP/1.1");
         parsedRequestComponents.put("RequestHeader", "");
         Request request = new Request(parsedRequestComponents);
-        CobspecRouter cobspecRouter = new CobspecRouter(null, new MockFileModifier());
+        CobspecRouter cobspecRouter = new CobspecRouter(null);
         Assert.assertEquals(cobspecRouter.getResponseBuilder(request).getClass(), new ParameterDecodeBuilder("/anything?ghjd").getClass());
     }
 
     @Test
-    public void getFileContentsBuilderWithGetWhenFormDoesNotExistsTest() throws Exception {
-
-        String path = "/src/main/resources/form";
-        Assert.assertFalse(new File(System.getProperty("user.dir") + path).exists());
-
+    public void getFileContentsBuilderWithGetTest() throws Exception {
         Map<String, String> parsedRequestComponents = new HashMap<>();
         parsedRequestComponents.put("RequestType", "GET");
         parsedRequestComponents.put("RequestURL", "/form");
         parsedRequestComponents.put("RequestHTTPVersion", "HTTP/1.1");
         parsedRequestComponents.put("RequestHeader", "");
         Request request = new Request(parsedRequestComponents);
-        iAppRouter responseRoute = new CobspecRouter("/src/main/resources", new MockFileModifier());
-        Assert.assertEquals(responseRoute.getResponseBuilder(request).getClass(), new Status200Builder().getClass());
+        CobspecRouter cobspecRouter = new CobspecRouter(null);
+        Assert.assertEquals(cobspecRouter.getResponseBuilder(request).getClass(), new FormResponseBuilder(null).getClass());
     }
 
     @Test
-    public void getFileContentsBuilderWithGetWhenFormExistsTest() throws Exception {
-        Map<String, String> parsedRequestComponents = new HashMap<>();
-        parsedRequestComponents.put("RequestType", "GET");
-        parsedRequestComponents.put("RequestURL", "/form");
-        parsedRequestComponents.put("RequestHTTPVersion", "HTTP/1.1");
-        parsedRequestComponents.put("RequestHeader", "");
-        Request request = new Request(parsedRequestComponents);
-        iAppRouter responseRoute = new CobspecRouter("/src/main/resources", new MockFileModifier());
-        createFile();
-        Assert.assertEquals(responseRoute.getResponseBuilder(request).getClass(), new FileContentsBuilder(null, null).getClass());
-        deleteFile();
-    }
-
-    @Test
-    public void getFormResponseBuilderWithPostFormTest() throws Exception {
-
-        Map<String, String> parsedRequestComponents = new HashMap<>();
-        parsedRequestComponents.put("RequestType", "POST");
-        parsedRequestComponents.put("RequestURL", "/form");
-        parsedRequestComponents.put("RequestHTTPVersion", "HTTP/1.1");
-        parsedRequestComponents.put("RequestHeader", "");
-        Request request = new Request(parsedRequestComponents);
-        MockFileModifier mfm = new MockFileModifier();
-        iAppRouter responseRoute = new CobspecRouter("/src/main/resources", mfm);
-        Assert.assertEquals(responseRoute.getResponseBuilder(request).getClass(), new FormResponseBuilder().getClass());
-        Assert.assertEquals("data=fatcat", mfm.getContents());
-    }
-
-    @Test
-    public void getFormResponseBuilderWithPutFormTest() throws Exception {
-
+    public void getFileContentsBuilderWithPutTest() throws Exception {
         Map<String, String> parsedRequestComponents = new HashMap<>();
         parsedRequestComponents.put("RequestType", "PUT");
         parsedRequestComponents.put("RequestURL", "/form");
         parsedRequestComponents.put("RequestHTTPVersion", "HTTP/1.1");
         parsedRequestComponents.put("RequestHeader", "");
         Request request = new Request(parsedRequestComponents);
-        MockFileModifier mfm = new MockFileModifier();
-        iAppRouter responseRoute = new CobspecRouter("/src/main/resources", mfm);
-        Assert.assertEquals(responseRoute.getResponseBuilder(request).getClass(), new FormResponseBuilder().getClass());
-        Assert.assertEquals("data=heathcliff", mfm.getContents());
+        CobspecRouter cobspecRouter = new CobspecRouter(null);
+        Assert.assertEquals(cobspecRouter.getResponseBuilder(request).getClass(), new FormResponseBuilder(null).getClass());
+        Assert.assertEquals("data=heathcliff", cobspecRouter.getContent());
     }
 
     @Test
-    public void getFormResponseBuilderWithDeleteFormTest() throws Exception {
+    public void getFileContentsBuilderWithPostTest() throws Exception {
+        Map<String, String> parsedRequestComponents = new HashMap<>();
+        parsedRequestComponents.put("RequestType", "POST");
+        parsedRequestComponents.put("RequestURL", "/form");
+        parsedRequestComponents.put("RequestHTTPVersion", "HTTP/1.1");
+        parsedRequestComponents.put("RequestHeader", "");
+        Request request = new Request(parsedRequestComponents);
+        CobspecRouter cobspecRouter = new CobspecRouter(null);
+        Assert.assertEquals(cobspecRouter.getResponseBuilder(request).getClass(), new FormResponseBuilder(null).getClass());
+        Assert.assertEquals("data=fatcat", cobspecRouter.getContent());
+    }
 
+    @Test
+    public void getFileContentsBuilderWithDeleteTest() throws Exception {
         Map<String, String> parsedRequestComponents = new HashMap<>();
         parsedRequestComponents.put("RequestType", "DELETE");
         parsedRequestComponents.put("RequestURL", "/form");
         parsedRequestComponents.put("RequestHTTPVersion", "HTTP/1.1");
         parsedRequestComponents.put("RequestHeader", "");
         Request request = new Request(parsedRequestComponents);
-        MockFileModifier mfm = new MockFileModifier();
-        iAppRouter responseRoute = new CobspecRouter("/src/main/resources", mfm);
-        Assert.assertEquals(responseRoute.getResponseBuilder(request).getClass(), new FormResponseBuilder().getClass());
-        Assert.assertEquals("file deleted", mfm.getContents());
+        CobspecRouter cobspecRouter = new CobspecRouter(null);
+        Assert.assertEquals(cobspecRouter.getResponseBuilder(request).getClass(), new FormResponseBuilder(null).getClass());
+        Assert.assertEquals("", cobspecRouter.getContent());
     }
 
     @Test
@@ -192,8 +167,8 @@ public class CobspecRouterTest {
         parsedRequestComponents.put("RequestHTTPVersion", "HTTP/1.1");
         parsedRequestComponents.put("RequestHeader", "");
         Request request = new Request(parsedRequestComponents);
-        iAppRouter responseRoute = new CobspecRouter("/src/main/resources", new MockFileModifier());
-        Assert.assertEquals(responseRoute.getResponseBuilder(request).getClass(), new PatchResponseBuilder().getClass());
+        CobspecRouter cobspecRouter = new CobspecRouter(null);
+        Assert.assertEquals(cobspecRouter.getResponseBuilder(request).getClass(), new PatchResponseBuilder().getClass());
     }
 
     @Test
@@ -205,10 +180,9 @@ public class CobspecRouterTest {
         parsedRequestComponents.put("RequestHTTPVersion", "HTTP/1.1");
         parsedRequestComponents.put("RequestHeader", "Etag: dc50a0d27dda2eee9f65644cd7e4c9cf11de8bec");
         Request request = new Request(parsedRequestComponents);
-        MockFileModifier mfm = new MockFileModifier();
-        iAppRouter responseRoute = new CobspecRouter("/src/main/resources", mfm);
-        Assert.assertEquals(responseRoute.getResponseBuilder(request).getClass(), new PatchResponseBuilder().getClass());
-        Assert.assertEquals("patched content", mfm.getContents());
+        CobspecRouter cobspecRouter = new CobspecRouter(null);
+        Assert.assertEquals(cobspecRouter.getResponseBuilder(request).getClass(), new PatchResponseBuilder().getClass());
+        Assert.assertEquals("patched content", cobspecRouter.getContent());
     }
 
     @Test
@@ -220,10 +194,9 @@ public class CobspecRouterTest {
         parsedRequestComponents.put("RequestHTTPVersion", "HTTP/1.1");
         parsedRequestComponents.put("RequestHeader", "Etag: ab60a0d27dda2eee9f65644cd7e4c9cf11de8bec");
         Request request = new Request(parsedRequestComponents);
-        MockFileModifier mfm = new MockFileModifier();
-        iAppRouter responseRoute = new CobspecRouter("/src/main/resources", mfm);
-        Assert.assertEquals(responseRoute.getResponseBuilder(request).getClass(), new PatchResponseBuilder().getClass());
-        Assert.assertEquals("default content", mfm.getContents());
+        CobspecRouter cobspecRouter = new CobspecRouter(null);
+        Assert.assertEquals(cobspecRouter.getResponseBuilder(request).getClass(), new PatchResponseBuilder().getClass());
+        Assert.assertEquals("default content", cobspecRouter.getContent());
     }
 
     @Test
@@ -234,8 +207,8 @@ public class CobspecRouterTest {
         parsedRequestComponents.put("RequestHTTPVersion", "HTTP/1.1");
         parsedRequestComponents.put("RequestHeader", "Authorization: Basic YWRtaW46aHVudGVyMg==");
         Request request = new Request(parsedRequestComponents);
-        iAppRouter responseRoute = new CobspecRouter("/src/main/resources", new MockFileModifier());
-        Assert.assertEquals(responseRoute.getResponseBuilder(request).getClass(), new BasicAuthenticationBuilder().getClass());
+        CobspecRouter cobspecRouter = new CobspecRouter(null);
+        Assert.assertEquals(cobspecRouter.getResponseBuilder(request).getClass(), new BasicAuthenticationBuilder().getClass());
     }
 
     @Test
@@ -246,8 +219,8 @@ public class CobspecRouterTest {
         parsedRequestComponents.put("RequestHTTPVersion", "HTTP/1.1");
         parsedRequestComponents.put("RequestHeader", "Authorization: Basic YWRtaW46aHVudGVyMg==j");
         Request request = new Request(parsedRequestComponents);
-        iAppRouter responseRoute = new CobspecRouter("/src/main/resources", new MockFileModifier());
-        Assert.assertEquals(responseRoute.getResponseBuilder(request).getClass(), new BasicAuthenticationRequiredBuilder().getClass());
+        CobspecRouter cobspecRouter = new CobspecRouter(null);
+        Assert.assertEquals(cobspecRouter.getResponseBuilder(request).getClass(), new BasicAuthenticationRequiredBuilder().getClass());
     }
 
     @Test
@@ -258,23 +231,7 @@ public class CobspecRouterTest {
         parsedRequestComponents.put("RequestHTTPVersion", "HTTP/1.1");
         parsedRequestComponents.put("RequestHeader", "");
         Request request = new Request(parsedRequestComponents);
-        iAppRouter responseRoute = new CobspecRouter("/src/main/resources", new MockFileModifier());
-        Assert.assertEquals(responseRoute.getResponseBuilder(request).getClass(), new BasicAuthenticationRequiredBuilder().getClass());
+        CobspecRouter cobspecRouter = new CobspecRouter(null);
+        Assert.assertEquals(cobspecRouter.getResponseBuilder(request).getClass(), new BasicAuthenticationRequiredBuilder().getClass());
     }
-
-    private void createFile() throws Exception {
-        String path = System.getProperty("user.dir") + "/src/main/resources/form";
-        File f = new File(path);
-        FileWriter file = new FileWriter(f, false);
-        file.write("");
-        file.flush();
-        file.close();
-    }
-
-    private void deleteFile() throws Exception {
-        String path = System.getProperty("user.dir") + "/src/main/resources/form";
-        File f = new File(path);
-        f.delete();
-    }
-
 }

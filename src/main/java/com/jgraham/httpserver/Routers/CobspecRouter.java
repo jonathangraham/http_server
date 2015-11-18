@@ -1,4 +1,4 @@
-package com.jgraham.httpserver.Responses;
+package com.jgraham.httpserver.Routers;
 
 import com.jgraham.httpserver.Requests.Request;
 import com.jgraham.httpserver.ResponseBuilder.*;
@@ -8,37 +8,40 @@ import java.io.File;
 public class CobspecRouter implements iAppRouter {
 
     private String directory;
-    private iFileModifier fm;
     private iResponseBuilder responseBuilder;
+    private String content = "default content";
+    private String verb;
+    private String path;
+    private String header;
 
-    public CobspecRouter(String directory, iFileModifier fm) {
+
+    public CobspecRouter(String directory) {
 
         this.directory = directory;
-        this.fm = fm;
     }
 
     public iResponseBuilder getResponseBuilder(Request request) throws Exception {
 
-        String verb = request.getRequestType();
-        String path = request.getRequestURL();
-        String header = request.getRequestHeader();
+        verb = request.getRequestType();
+        path = request.getRequestURL();
+        header = request.getRequestHeader();
 
         if (header.contains("Authorization")) {
-            getAuthenticationBuilder(header);
+            getAuthenticationBuilder();
         }
         else if (verb.equals("GET")) {
-            getGETResponseBuilder(verb, path, header);
+            getGETResponseBuilder();
         }
         else if (verb.equals("PATCH")) {
-            getPATCHResponseBuilder(verb, path, header);
+            getPATCHResponseBuilder();
         }
         else {
-            getOtherResponseBuilder(verb, path, header);
+            getOtherResponseBuilder();
         }
         return responseBuilder;
     }
 
-    private void getGETResponseBuilder(String verb, String path, String header) {
+    private void getGETResponseBuilder() {
         if ("/".equals(path)) {
             responseBuilder = new FileDirectoryBuilder(directory);
         }
@@ -51,11 +54,8 @@ public class CobspecRouter implements iAppRouter {
         else if (header.contains("Range")) {
             responseBuilder = new PartialContentBuilder(header, path);
         }
-        else if (path.contains("/form") && (new File(getRoute(directory, path)).exists())) {
-            responseBuilder = new FileContentsBuilder(path, directory);
-        }
-        else if (path.contains("/form")) {
-            responseBuilder = new Status200Builder();
+        else if (path.contains("/form") || path.contains("/patch")) {
+            responseBuilder = new FormResponseBuilder(content);
         }
         else if (new File(getRoute(directory, path)).exists()) {
             responseBuilder = new FileContentsBuilder(path, directory);
@@ -72,13 +72,21 @@ public class CobspecRouter implements iAppRouter {
 
     }
 
-    private void getOtherResponseBuilder(String verb, String path, String header) throws Exception {
+    private void getOtherResponseBuilder() throws Exception {
         if (path.equals("/method_options")) {
             responseBuilder = new MethodOptionsBuilder();
         }
         else if (path.equals("/form")) {
-            modifyFile(verb, path, header);
-            responseBuilder = new FormResponseBuilder();
+            if (verb.equals("PUT")) {
+                content = "data=heathcliff";
+            }
+            else if (verb.equals("POST")) {
+                content = "data=fatcat";
+            }
+            else if (verb.equals("DELETE")) {
+                content = "";
+            }
+            responseBuilder = new FormResponseBuilder(content);
         }
         else if (new File(getRoute(directory, path)).exists()) {
             responseBuilder = new MethodNotAllowedBuilder();
@@ -88,15 +96,18 @@ public class CobspecRouter implements iAppRouter {
         }
     }
 
-    private void getPATCHResponseBuilder(String verb, String path, String header) throws Exception {
-        modifyFile(verb, path, header);
+    private void getPATCHResponseBuilder() throws Exception {
+        if (header.contains("dc50a0d27dda2eee9f65644cd7e4c9cf11de8bec")) {
+            content = "patched content";
+        }
+        else{
+            content = "default content";
+        }
         responseBuilder = new PatchResponseBuilder();
     }
 
-
-
-    private void getAuthenticationBuilder(String header) {
-        Boolean authorized = isAuthorized(header);
+    private void getAuthenticationBuilder() {
+        Boolean authorized = isAuthorized();
         if (authorized == true) {
             responseBuilder = new BasicAuthenticationBuilder();
         }
@@ -105,32 +116,17 @@ public class CobspecRouter implements iAppRouter {
         }
     }
 
-    private Boolean isAuthorized(String header) {
+    private Boolean isAuthorized() {
         String credentials = header.split(" ")[2];
         return (credentials.equals("YWRtaW46aHVudGVyMg=="));
     }
 
-    private void modifyFile(String verb, String path, String header) throws Exception{
-        File f = new File(getRoute(directory, path));
-        if (header.contains("dc50a0d27dda2eee9f65644cd7e4c9cf11de8bec")) {
-            fm.writeContentToFile("patched content", f);
-        }
-        else if (verb.equals("PATCH")) {
-            fm.writeContentToFile("default content", f);
-        }
-        else if (verb.equals("PUT")) {
-            fm.writeContentToFile("data=heathcliff", f);
-        }
-        else if (verb.equals("POST")) {
-            fm.writeContentToFile("data=fatcat", f);
-        }
-        else if (verb.equals("DELETE")) {
-            fm.deleteFile(f);
-        }
-    }
-
     private String getRoute(String directory, String path) {
         return (System.getProperty("user.dir")) + directory + path;
+    }
+
+    public String getContent() {
+        return content;
     }
 
 }

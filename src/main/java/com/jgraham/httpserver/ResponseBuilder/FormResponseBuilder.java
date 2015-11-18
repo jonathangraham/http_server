@@ -2,6 +2,12 @@ package com.jgraham.httpserver.ResponseBuilder;
 
 public class FormResponseBuilder implements iResponseBuilder {
 
+    private String content;
+
+    public FormResponseBuilder(String content) {
+        this.content = content;
+    }
+
     public byte[] getResponse() throws Exception{
         StringBuilder response = new StringBuilder();
         response.append(getStatusLine());
@@ -19,7 +25,7 @@ public class FormResponseBuilder implements iResponseBuilder {
     }
 
     private String getBody() {
-        return "";
+        return content;
     }
 
 }

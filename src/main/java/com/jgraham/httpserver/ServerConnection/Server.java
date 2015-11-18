@@ -3,7 +3,7 @@ package com.jgraham.httpserver.ServerConnection;
 import com.jgraham.httpserver.Requests.Request;
 import com.jgraham.httpserver.Requests.RequestParser;
 import com.jgraham.httpserver.ResponseBuilder.iResponseBuilder;
-import com.jgraham.httpserver.Responses.iAppRouter;
+import com.jgraham.httpserver.Routers.iAppRouter;
 
 import java.io.BufferedReader;
 import java.io.IOException;

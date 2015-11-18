@@ -1,4 +1,4 @@
-package com.jgraham.httpserver.Responses;
+package com.jgraham.httpserver.Routers;
 
 import com.jgraham.httpserver.Requests.Request;
 import com.jgraham.httpserver.ResponseBuilder.iResponseBuilder;

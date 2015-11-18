@@ -1,9 +1,7 @@
 package com.jgraham.httpserver;
 
-import com.jgraham.httpserver.Responses.CobspecRouter;
-import com.jgraham.httpserver.Responses.FileModifier;
-import com.jgraham.httpserver.Responses.iFileModifier;
-import com.jgraham.httpserver.Responses.iAppRouter;
+import com.jgraham.httpserver.Routers.CobspecRouter;
+import com.jgraham.httpserver.Routers.iAppRouter;
 import com.jgraham.httpserver.ServerConnection.Server;
 import com.jgraham.httpserver.ServerConnection.ServerConfig;
 
@@ -14,8 +12,7 @@ public class HttpServerMain {
         config.parseArgs(args);
         int port = config.getPort();
         String directory = config.getDirectory();
-        iFileModifier fm = new FileModifier();
-        iAppRouter appRouter = new CobspecRouter(directory, fm);
+        iAppRouter appRouter = new CobspecRouter(directory);
         startServer(port, appRouter);
     }
 
